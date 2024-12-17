@@ -23,3 +23,11 @@
   font-family: "Montserrat", sans-serif;
   
 }
+
+
+
+.header li a{
+  font-size: small;
+  color: #333333;
+  font-weight: bold;
+}
