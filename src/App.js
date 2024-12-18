@@ -9,6 +9,10 @@ import {
 } from "react-router-dom";
 import SharedLayout from "./components/SharedLayout.jsx";
 import Home from "./pages/Home.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
+import Signup from "./pages/Signup.jsx";
+import Login from "./pages/Login.jsx";
+import Contact from "./pages/Contact.jsx";
 
 function App() {
   const main = createBrowserRouter(
@@ -21,7 +25,13 @@ function App() {
           }
         />
 
-        {/* <Route path="*" element={<ErrorPage />} /> */}
+        <Route path="signup" element={<Signup />} />
+        
+        <Route path="login" element={<Login />} />
+
+        <Route path="*" element={<ErrorPage />} />
+
+        <Route path="contact" element={<Contact />} />
 
         {/* <Route
           path="cart"
@@ -39,7 +49,6 @@ function App() {
 
         <Route path="checkout" element={<Checkout />} />
 
-        <Route path="contact" element={<Contact />} />
 
         <Route path="user" element={<User />} />
 
@@ -58,11 +67,8 @@ function App() {
           }
         /> */}
 
-        {/* <Route path="signup" element={<Signup />} />
 
-        <Route path="login" element={<Login />} />
-
-        <Route path="shop" element={<ShopLayout />}>
+        {/* <Route path="shop" element={<ShopLayout />}>
           <Route
             index
             element={
