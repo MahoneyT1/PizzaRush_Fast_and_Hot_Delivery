@@ -18,11 +18,18 @@
   font-family: "Poppins", system-ui;
   /* border: 1px solid red; */
   /* font-family: "poppins"; */
-  
+  /* overflow: auto; */
   text-decoration: none;
   font-family: "Montserrat", sans-serif;
   
 }
+
+
+img{
+  width: 100%;
+  max-width: 100%;
+}
+
 
 .colorr{
   color: #D96940;
@@ -33,7 +40,8 @@
   margin: 0 auto;
 }
 
-.header li a{
+.header li a,
+.footer li a{
   font-size: small;
   color: #333333;
   font-weight: bold;
@@ -92,11 +100,49 @@ button:hover{
   border-radius: 4px;
 }
 
-.testi-i{
-  width: 10rem;
-  height: 10rem;
-  background-color: green !important;
+
+.box{
+  position: relative;    
+  background-color: hsl(0, 0%, 98%) !important;
+  border-radius: 10px;
+  /* min-height: 400px; */
+  z-index: -1;
 }
+
+
+.box p{
+  line-height: 18px !important;
+  /* color: red; */
+  font-size: 11px !important;
+  
+}
+
+.box h4{
+  line-height: 18px !important;
+  /* color: red; */
+  font-size: 14px !important;
+  font-weight: bold;
+  margin-top: 1.7rem !important;
+}
+
+
+.profile{
+  width: 60px;
+  height: 60px;
+  position: absolute;    
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%,-50%);
+}
+
+
+/* .sliderr{
+  padding: 2rem 0;
+  background: #000;
+} */
+
+
 
 
 
@@ -166,6 +212,63 @@ padding: 7px 1px;
   border: none;
   min-height: 190px;
 }
+
+
+
+
+/* ABOUT SECTION STYLE */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.7rem;
+}
+
+
+.hover,
+.grid-item,
+.home-cat-item{
+  transition: 400ms ease-in-out;
+  color: #333333 !important;
+}
+
+
+.hover:hover,
+.home-cat-item:hover, 
+.grid-item:hover{
+  background-color: #db4444 !important;
+  color: #ffffff !important;
+}
+
+
+
+.member-image{
+  height: 270px;
+  background-color: #f5f5f5;
+}
+
+.member-image img{
+  object-fit: contain;
+  height: 100%;
+  object-position: center;
+}
+
+
+
+.grid1,
+.grid2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 4rem !important;
+}
+
+
+.item-image{
+  width: 20rem;
+  height: 10rem;
+  background-color: green;
+}
+
 
 
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { LuPizza } from "react-icons/lu";
 import { AiOutlineShoppingCart } from "react-icons/ai"; 
+import { Link } from "react-router-dom";
 
 
 const Header = () => {
@@ -18,20 +19,20 @@ const Header = () => {
 
           <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li>
-              <a href="nac" className="nav-link px-2 ">Home</a>
+              <Link to="/" className="nav-link">Home</Link>
             </li>
             <li>
-              <a href="nav" className="nav-link ">Menu</a>
+              <Link to="menu" className="nav-link ">Menu</Link>
             </li>
             <li>
-              <a href="nav" className="nav-link ">Specials</a>
+              <Link to="specials" className="nav-link ">Specials</Link>
             </li>
             <li>
-              <a href="nav" className="nav-link ">Contact Us
-              </a>
+              <Link to="/contact" className="nav-link ">Contact Us
+              </Link>
             </li>
             <li>
-              <a href="nav" className="nav-link">About Us</a>
+              <Link to="/about" className="nav-link">About Us</Link>
             </li>
           </ul>
 

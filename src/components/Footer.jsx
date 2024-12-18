@@ -1,10 +1,11 @@
 import React from 'react'
 import { LuPizza } from "react-icons/lu";
+import { Link } from 'react-router-dom';
 // import { AiOutlineShoppingCart } from "react-icons/ai"; 
 
 const Footer = () => {
   return (
-    <footer class="py-5">
+    <footer class="py-5 footer">
         <div class="container p-0">
             <div class="m-0 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 p-0">
                 <div class="d-flex flex-column gap-md-4">
@@ -16,20 +17,49 @@ const Footer = () => {
                 </div>
             
 
-                <ul class="d-flex  align-items-start m-0 flex-column gap-3">
-                    <li>Pages</li>
-                    <li>Home</li>
-                    <li>Pricing</li>
-                    <li>Products</li>
-                    <li>About Us</li>
+             
+
+                <ul className=" nav d-flex justify-content-start  align-items-center m-0 flex-column gap-3">
+                    <li>
+                        <b className='nav-link text-dark fw-bolder'>Pages</b>
+                    </li>
+                    <li>
+                    <Link to="menu" className="nav-link ">Menu</Link>
+                    </li>
+                    <li>
+                    <Link to="specials" className="nav-link ">Specials</Link>
+                    </li>
+                    <li>
+                    <Link to="/contact" className="nav-link ">Contact Us
+                    </Link>
+                    </li>
+                    <li>
+                    <Link to="/about" className="nav-link">About Us</Link>
+                    </li>
+                </ul>
+
+             
+
+                <ul className=" nav d-flex justify-content-start  align-items-center m-0 flex-column gap-3">
+                    <li>
+                    <Link to="/" className="nav-link ">Home</Link>
+                    </li>
+                    <li>
+                    <Link to="menu" className="nav-link ">Menu</Link>
+                    </li>
+                    <li>
+                    <Link to="specials" className="nav-link ">Specials</Link>
+                    </li>
+                    <li>
+                    <Link to="/contact" className="nav-link ">Contact Us
+                    </Link>
+                    </li>
+                    <li>
+                    <Link to="/about" className="nav-link">About Us</Link>
+                    </li>
                 </ul>
                 
-                <ul class="d-flex align-items-start flex-column m-0 gap-3">
-                    <li>Others</li>
-                    <li>Careers</li>
-                    <li>Community</li>
-                    <li>Privacy Policy</li>
-                </ul>
+                
 
 
                 <div class="d-flex flex-column gap-3 gap-md-4">

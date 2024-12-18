@@ -10,9 +10,12 @@ import {
 import SharedLayout from "./components/SharedLayout.jsx";
 import Home from "./pages/Home.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
-import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 import Contact from "./pages/Contact.jsx";
+import About from "./pages/About.jsx";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Signup from "./pages/Signup.jsx"
 
 function App() {
   const main = createBrowserRouter(
@@ -33,59 +36,15 @@ function App() {
 
         <Route path="contact" element={<Contact />} />
 
-        {/* <Route
-          path="cart"
-          element={<Cart liked={liked} setLiked={setLiked} />}
-        /> */}
+        <Route path="about" element={<About />} />
 
-        {/* <Route
-          path="wishlist"
-          element={
-            <WishList />
-          }
-        /> */}
+       
 
-        {/* <Route path="product-detail" element={<ProductDetail />} />
-
-        <Route path="checkout" element={<Checkout />} />
+       
 
 
-        <Route path="user" element={<User />} />
-
-        <Route path="about" element={<About />} /> */}
-
-        {/* <Route
-          path="shop"
-          element={
-            <Posts
-              liked={liked}
-              setLiked={setLiked}
-              trending={trending}
-              mCloth={mCloth}
-              wCloth={wCloth}
-            />
-          }
-        /> */}
-
-
-        {/* <Route path="shop" element={<ShopLayout />}>
-          <Route
-            index
-            element={
-              <Posts
-                liked={liked}
-                setLiked={setLiked}
-                trending={trending}
-                mCloth={mCloth}
-                wCloth={wCloth}
-              />
-            }
-          /> */}
-          {/* <Route
-            path=":name"
-            element={<ProductDetail liked={liked} setLiked={setLiked} />}
-          />
-        </Route> */}
+       
+          
       </Route>
     )
   );
