@@ -16,7 +16,7 @@
   list-style-type: none !important;
   text-decoration: none !important;
   font-family: "Poppins", system-ui;
-  /* border: 1px solid red; */
+  border: 1px solid red;
   /* font-family: "poppins"; */
   
   text-decoration: none;
@@ -24,7 +24,14 @@
   
 }
 
+.colorr{
+  color: #D96940;
+}
 
+.container2{
+  width: 70%;
+  margin: 0 auto;
+}
 
 .header li a{
   font-size: small;
@@ -64,4 +71,29 @@ button:hover{
 
 .button2{
   background-color: #D96940;
+}
+
+
+.menu{
+  position: relative;
+
+}
+
+
+.menu::after{
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -9%;
+  transform: translate(-50%, -50%) !important;
+  width: 4rem;
+  height: 4px;
+  background-color: #D96940;
+  border-radius: 4px;
+}
+
+.testi-i{
+  width: 10rem;
+  height: 10rem;
+  background-color: green !important;
 }
