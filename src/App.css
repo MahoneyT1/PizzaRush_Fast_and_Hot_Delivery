@@ -16,7 +16,7 @@
   list-style-type: none !important;
   text-decoration: none !important;
   font-family: "Poppins", system-ui;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   /* font-family: "poppins"; */
   
   text-decoration: none;
@@ -30,4 +30,38 @@
   font-size: small;
   color: #333333;
   font-weight: bold;
+}
+
+
+.main{
+  min-height: 100%;
+  min-height: 80vh;
+  display: flex;
+}
+
+.hero-header {
+  max-width: 480px;
+  font-weight: 700;
+}
+
+button{
+  font-size: 13px !important;
+  /* border-radius: 0.rem !important; */
+  padding: 8px 1.2rem;
+  border: none;
+  outline: none;
+}
+
+button:hover{
+  background-color: #333333;
+  transition: all 300ms ease-in-out;
+}
+
+.button{
+  background-color: #FFA156;
+
+}
+
+.button2{
+  background-color: #D96940;
 }

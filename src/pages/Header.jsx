@@ -10,7 +10,7 @@ const Header = () => {
         <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-1 border-bottom">
           <a
             href="/"
-            className="d-flex gap-2 align-items-center  mb-2 p-0 mb-md-0 text-dark text-decoration-none"
+            className="d-flex col-md-auto gap-2 align-items-center  mb-2 p-0 mb-md-0 text-dark text-decoration-none"
           >
             <LuPizza size={30} />
             <b>Pizza_Rush</b>
@@ -35,7 +35,7 @@ const Header = () => {
             </li>
           </ul>
 
-          <div className="col-md-3 d-flex justify-content-end align-items-center gap-3">
+          <div className="col-md-auto d-flex justify-content-end align-items-center gap-3">
             <li><a href="nav"><AiOutlineShoppingCart size={24} /></a></li>
             <li>
               <a href="nav" className="nav-link">Order Online</a>
