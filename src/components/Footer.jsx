@@ -1,7 +1,10 @@
 import React from 'react'
 import { LuPizza } from "react-icons/lu";
 import { Link } from 'react-router-dom';
-// import { AiOutlineShoppingCart } from "react-icons/ai"; 
+import { FaFacebookF } from "react-icons/fa6";
+import { FaXTwitter } from "react-icons/fa6";
+import { FaInstagram } from "react-icons/fa6";
+import { FaWhatsapp } from "react-icons/fa6";
 
 const Footer = () => {
   return (
@@ -14,14 +17,20 @@ const Footer = () => {
                         <b>Pizza_Rush</b>
                     </a>
                     <small>Fresh, hot, and loaded with flavor—your perfect pizza is just a click away. Order now and we’ll deliver it right to your door!</small>
+                    <div className="socials d-flex align-items-center gap-3">
+                        <li><a href="link"><FaInstagram size={22} /></a></li>
+                        <li><a href="link"><FaXTwitter size={22} /></a></li>
+                        <li><a href="link"><FaFacebookF size={22} /></a></li>
+                        <li><a href="link"><FaWhatsapp size={22} /></a></li>
+                    </div>
                 </div>
             
 
              
 
-                <ul className=" nav d-flex justify-content-start  align-items-center m-0 flex-column gap-3">
+                <ul className=" nav d-flex justify-content-start  align-items-center m-0 flex-column gap-2">
                     <li>
-                        <b className='nav-link text-dark fw-bolder'>Pages</b>
+                        <b className='nav-link pt-0 text-dark fw-bolder'>Pages</b>
                     </li>
                     <li>
                     <Link to="menu" className="nav-link ">Menu</Link>
@@ -40,7 +49,10 @@ const Footer = () => {
 
              
 
-                <ul className=" nav d-flex justify-content-start  align-items-center m-0 flex-column gap-3">
+                <ul className=" nav d-flex justify-content-start  align-items-center m-0 flex-column gap-2">
+                    <li>
+                        <b className='nav-link pt-0 text-dark fw-bolder'>Quick Links</b>
+                    </li>
                     <li>
                     <Link to="/" className="nav-link ">Home</Link>
                     </li>
@@ -53,9 +65,6 @@ const Footer = () => {
                     <li>
                     <Link to="/contact" className="nav-link ">Contact Us
                     </Link>
-                    </li>
-                    <li>
-                    <Link to="/about" className="nav-link">About Us</Link>
                     </li>
                 </ul>
                 

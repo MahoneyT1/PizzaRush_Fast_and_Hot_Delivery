@@ -8,7 +8,7 @@ const Signup = () => {
         <div className="row m-0 h-user">
 
             <div className="col-md-6 p-0 reg-image">
-              <img src="../Images/sign.png" alt="" />
+              <img src="../Images/pi12.jpg" alt="" />
             </div>
 
 
@@ -22,8 +22,8 @@ const Signup = () => {
                     <input type="text" placeholder="Username" />
                     <input type="email" placeholder="Email" />
                     <input type="password" placeholder="Password" />
-                    <button className="mt-2 main-btn">Create Account</button>
-                    <button className='main-btn bg-dark-subtle text-dark'>Sign up with Google</button>
+                    <button className="mt-2 main-btn button text-white">Create Account</button>
+                    <button className='main-btn  text-white button2'>Sign up with Google</button>
                     <small>Already have an acount? <Link to="/login">Login</Link></small>
                 </form> 
                  

@@ -10,7 +10,7 @@ const Hero = () => {
 
           <p className="text-muted para my-2">Fresh, hot, and loaded with flavor—your perfect pizza is just a click away. Order now and we’ll deliver it right to your door! </p>
 
-          <div className='action d-flex align-items-center gap-2'>
+          <div className='actions d-flex align-items-center gap-2'>
             <button className="d-inline-block text-white button">Order Now</button>
             <button className="d-inline-block text-white button2">See Menu</button>
           </div>
@@ -18,7 +18,8 @@ const Hero = () => {
         <div className="col-lg-6 d-flex justify-content-end">
           
           <img
-            src="../../Images/pizz.png"
+            // src="../../Images/pizz.png"
+            src="../../Images/pi2.jpg"
             className="img-fluid intro-image"
             alt="hero_image"
           />

@@ -3,14 +3,15 @@ import Hero from '../components/Hero'
 import Menu from '../components/Menu'
 import Testimonials from '../components/Testimonials'
 import Footer from '../components/Footer'
+import ShopComponent from '../components/ShopComponent'
 
 const Home = () => {
   return (
     <div>
         <Hero />
-        <Menu />
+        {/* <Menu /> */}
+        <ShopComponent />
         <Testimonials />
-        <Footer />
     </div>
   )
 }
