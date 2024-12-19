@@ -8,7 +8,7 @@ const Login = () => {
       <div className="row m-0 h-user">
 
           <div className="col-md-6 p-0 reg-image">
-            <img src="../images/pi11.jpg" alt="" />
+            <img src="../images/pi9.jpg" alt="" />
           </div>
 
 

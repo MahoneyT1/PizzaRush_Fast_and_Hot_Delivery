@@ -139,7 +139,7 @@ const ShopComponent = () => {
           </div>
         </div>
 
-        <div className="see-all d-flex align-items-center justify-content-center">
+        <div className="see-all d-flex align-items-center justify-content-center mt-4">
           <Link to="/menu" className="nav-link text-center fw-bold cus-btn">View All</Link>
         </div>
 

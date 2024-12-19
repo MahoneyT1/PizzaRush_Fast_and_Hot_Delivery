@@ -34,7 +34,7 @@ const Contact = () => {
                             </div>
                         </div>
                         <textarea className='mt-3 rounded' placeholder='Your Message' name="" id=""></textarea>
-                        <button className='main-btn rounded mt-2'>Send Message <VscSend /></button>
+                        <button className='main-btn rounded text-white button2  mt-2'>Send Message <VscSend /></button>
                     </form>
                 </div>
             </div>
