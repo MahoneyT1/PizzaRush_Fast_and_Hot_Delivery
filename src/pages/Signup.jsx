@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const Signup = () => {
   return (
     <div className="user-reg py-5">
-      <div className="container2">
+      <div className="container">
         <div className="row m-0 h-user">
 
             <div className="col-md-6 p-0 reg-image">

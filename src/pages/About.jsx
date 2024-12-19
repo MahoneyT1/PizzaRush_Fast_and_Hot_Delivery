@@ -22,7 +22,7 @@ const About = () => {
                 </p>
                 </div>
                 <div className="col">
-                    <img src="../../Images/bags.png" alt="" />
+                    <img src="../../Images/pizz.png" alt="" />
                 </div>
             </div>
 

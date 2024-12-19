@@ -11,7 +11,7 @@ const Footer = () => {
     <footer class="py-5 footer">
         <div class="container p-0">
             <div class="m-0 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 p-0">
-                <div class="d-flex flex-column gap-md-4">
+                <div class=" d-flex text-center text-lg-start justify-content-center align-items-lg-start align-items-center flex-column gap-2 p-4 p-lg-0">
                     <a href="/"  className="d-flex col-md-auto gap-2 align-items-center  mb-2 p-0 mb-md-0 text-dark text-decoration-none" >
                         <LuPizza size={30} />
                         <b>Pizza_Rush</b>
@@ -71,7 +71,7 @@ const Footer = () => {
                 
 
 
-                <div class="d-flex flex-column gap-3 gap-md-4">
+                <div class=" d-flex text-center text-lg-start justify-content-center align-items-lg-start align-items-center flex-column gap-2 p-4 p-lg-0">
                     <div class="d-flex align-items-center align-items-md-end ">
                     <input type="text" class="form-control" placeholder="Updates in your inbox…" />
                     <button>Go</button>
