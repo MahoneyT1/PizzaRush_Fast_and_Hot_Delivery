@@ -39,10 +39,10 @@ const Header = () => {
           <div className="col-md-auto d-flex justify-content-end align-items-center gap-3">
             <li><a href="nav"><AiOutlineShoppingCart size={24} /></a></li>
             <li>
-              <a href="nav" className="nav-link">Order Online</a>
+              <Link to="/menu" className="nav-link">Order Online</Link>
             </li>
             <li>
-              <a href="nav" className="nav-link ">Sign Up</a>
+              <Link to="/signup" className="nav-link ">Sign Up</Link>
             </li>
           </div>
         </div>

@@ -95,6 +95,16 @@ button:hover{
   background-color: #D96940;
 }
 
+a.cus-btn{
+  border: 1px solid #D96940;
+  border-radius: 1rem;
+  padding: 10px 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
 
 .menu{
   position: relative;

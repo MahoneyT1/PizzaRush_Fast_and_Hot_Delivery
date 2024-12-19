@@ -138,6 +138,12 @@ const ShopComponent = () => {
             </div>
           </div>
         </div>
+
+        <div className="see-all d-flex align-items-center justify-content-center">
+          <Link to="/menu" className="nav-link text-center fw-bold cus-btn">View All</Link>
+        </div>
+
+
       </div>
     </div>
   );
