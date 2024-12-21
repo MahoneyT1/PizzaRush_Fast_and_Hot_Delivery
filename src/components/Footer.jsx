@@ -13,7 +13,7 @@ const Footer = () => {
             <div class="m-0 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 p-0">
 
                 <div class=" d-flex text-center text-lg-start align-items-lg-start align-items-center flex-column gap-3  p-lg-0 mb-3 mb-md-0">
-                    <a href="/"  className="d-flex col-md-auto gap-2 align-items-center  mb-2 p-0 mb-md-0 text-dark text-decoration-none" >
+                    <a href="/"  className="d-flex col-md-auto gap-2 align-items-center  mb-2 p-0 mb-md-0 text-white text-decoration-none" >
                         <LuPizza size={30} />
                         <b>Pizza_Rush</b>
                     </a>
@@ -31,7 +31,7 @@ const Footer = () => {
 
                 <ul className=" nav d-flex justify-content-start  align-items-center m-0 flex-column gap-2 mb-3 mb-md-0">
                     <li>
-                        <b className='nav-link pt-0 text-dark fw-bolder'>Pages</b>
+                        <b className='nav-link pt-0 text-white fw-bolder'>Pages</b>
                     </li>
                     <li>
                     <Link to="menu" className="nav-link ">Menu</Link>
@@ -52,7 +52,7 @@ const Footer = () => {
 
                 <ul className=" nav d-flex justify-content-start  align-items-center m-0 flex-column gap-2 mb-3 mb-md-0">
                     <li>
-                        <b className='nav-link pt-0 text-dark fw-bolder'>Quick Links</b>
+                        <b className='nav-link pt-0 text-white fw-bolder'>Quick Links</b>
                     </li>
                     <li>
                     <Link to="/" className="nav-link ">Home</Link>
@@ -74,7 +74,7 @@ const Footer = () => {
 
                 <div class=" d-flex text-center text-lg-start  align-items-lg-start align-items-center flex-column gap-2 p-4 p-lg-0 mb-3 mb-md-0">
                 <li>
-                        <b className='nav-link pt-0 text-dark fw-bolder'>Subscribe To Our Newsletter</b>
+                        <b className='nav-link pt-0 text-white fw-bolder'>Subscribe To Our Newsletter</b>
                     </li>
                     <div class="d-flex align-items-center align-items-md-end ">
                     <input type="text" class="f" placeholder="Enter Your Email..." />

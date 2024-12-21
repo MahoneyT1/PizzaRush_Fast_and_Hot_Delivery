@@ -310,6 +310,16 @@ padding: 7px 1px;
 }
 
 /* FOOTER STYLES */
+.footer{
+  background-color: #333333;
+  color: #ffffff !important;
+}
+
+.footer li a {
+  color: #ffffff !important;
+}
+
+
 .footer input{
   border: 1px solid #ccc;
   padding: 0.45rem 1rem !important;
