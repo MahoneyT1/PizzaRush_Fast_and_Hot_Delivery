@@ -309,7 +309,13 @@ padding: 7px 1px;
   height: 100%;
 }
 
-
+/* FOOTER STYLES */
+.footer input{
+  border: 1px solid #ccc;
+  padding: 0.45rem 1rem !important;
+  outline: none;
+  font-size: small;
+}
 
 /* ======== SHOP COMPONENT SECTION======== */
 .cat{
@@ -420,5 +426,14 @@ padding: 7px 1px;
     width: fit-content;
     object-fit: contain;
   
+  }
+
+  .hero{
+    min-height: fit-content;
+  }
+
+  .container2{
+    width: 90%;
+    margin: 0 auto;
   }
 }

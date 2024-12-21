@@ -67,10 +67,10 @@ const ShopComponent = () => {
 
         <div className=''>
             <div className="cat">
-              <small className="ms-4 fw-bold cat-label">header</small>
+              <small className="ms-4 fw-bold cat-label">Menu</small>
             </div>
             <div className="cat-header mt-3 d-flex align-items-center justify-content-between">
-              <h3 className="fw-bold ">title</h3>
+              <h3 className="fw-bold ">Customers Favourite</h3>
               <div className="d-flex align-items-center gap-2">
                 <button 
                     className="" 
