@@ -1,0 +1,423 @@
+/* ======Global style======== */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap");
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+
+
+*{
+  padding: 0;
+  box-sizing: border-box !important;
+  list-style-type: none !important;
+  text-decoration: none !important;
+  font-family: "Poppins", system-ui;
+  /* border: 1px solid red; */
+  /* font-family: "poppins"; */
+  /* overflow: auto; */
+  text-decoration: none;
+  font-family: "Montserrat", sans-serif;
+  
+}
+
+
+img{
+  width: 100%;
+  max-width: 100%;
+}
+
+
+.colorr{
+  color: #D96940;
+}
+
+.container2{
+  width: 70%;
+  margin: 0 auto;
+}
+
+
+.nav-link{
+  font-size: small !important;
+  transition: 300ms ease-in-out;
+}
+
+small{
+  font-size: 13px !important;
+}
+
+.header li a,
+.footer li a{
+  font-size: small;
+  color: #333333;
+  font-weight: bold;
+}
+
+.footer li a{
+  font-weight: normal;
+}
+
+
+.hero{
+  min-height: 100%;
+  min-height: 80vh;
+  display: flex;
+}
+
+.hero-header {
+  max-width: 480px;
+  font-weight: 700;
+}
+
+button{
+  font-size: 13px !important;
+  /* border-radius: 0.rem !important; */
+  padding: 8px 1.2rem;
+  border: none;
+  outline: none;
+}
+
+button:hover{
+  background-color: #333333;
+  transition: all 300ms ease-in-out;
+}
+
+.button{
+  background-color: #FFA156;
+
+}
+
+.button2{
+  background-color: #D96940;
+}
+
+a.cus-btn{
+  border: 1px solid #D96940;
+  border-radius: 1rem;
+  padding: 10px 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+.menu{
+  position: relative;
+
+}
+
+
+.menu::after{
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -9%;
+  transform: translate(-50%, -50%) !important;
+  width: 4rem;
+  height: 4px;
+  background-color: #D96940;
+  border-radius: 4px;
+}
+
+
+.box{
+  position: relative;    
+  background-color: hsl(0, 0%, 98%) !important;
+  border-radius: 10px;
+  /* min-height: 400px; */
+  z-index: -1;
+}
+
+
+.box p{
+  line-height: 18px !important;
+  /* color: red; */
+  font-size: 11px !important;
+  
+}
+
+p.desc{
+  font-size: 13px !important;
+
+}
+
+.box h4{
+  line-height: 18px !important;
+  /* color: red; */
+  font-size: 14px !important;
+  font-weight: bold;
+  margin-top: 1.7rem !important;
+}
+
+
+.profile{
+  width: 60px;
+  height: 60px;
+  position: absolute;    
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%,-50%);
+}
+
+
+/* .sliderr{
+  padding: 2rem 0;
+  background: #000;
+} */
+
+
+
+
+
+
+
+/* ERROR STYLE */
+.error{
+  min-height: 80vh;
+
+}
+
+
+/* ===============REGISTER  STYLES============= */
+.user-reg{
+  min-height: 400px;
+}
+
+.reg-image{
+  /* height: 100%; */
+  min-height: 440px;
+  object-fit: contain;
+
+}
+
+.reg-image img{
+  width: 100%;
+  object-fit: contain !important;
+  height: 100% !important;
+}
+
+.user-reg-form{
+width: 300px;
+}
+
+.h-user{
+min-height: 200px;
+}
+
+.user-reg-form input{
+border: none;
+border-bottom: 1px solid #ccc;
+outline: none !important;
+padding: 7px 1px;
+}
+
+
+
+/* =======CONTACT STYLES======== */
+.contact {
+  background-color: #f5f5f5;
+  min-height: 440px;
+}
+
+.contact input{
+  font-size: small;
+  outline: none;
+  border: none;
+  background-color: #fafafa;
+  padding: 10px;
+  display: block;
+  width: 100%;
+}
+
+.contact textarea{
+  outline: none;
+  padding: 10px;
+  display: block;
+  width: 100%;
+  background-color: #fafafa;
+  border: none;
+  min-height: 190px;
+}
+
+
+
+
+/* ABOUT SECTION STYLE */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.7rem;
+}
+
+
+.hover,
+.grid-item,
+.home-cat-item{
+  transition: 400ms ease-in-out;
+  color: #333333 !important;
+}
+
+
+.hover:hover,
+.home-cat-item:hover, 
+.grid-item:hover{
+  background-color: #db4444 !important;
+  color: #ffffff !important;
+}
+
+
+
+.member-image{
+  height: 270px;
+  background-color: #f5f5f5;
+}
+
+.member-image img{
+  object-fit: contain;
+  height: 100%;
+  object-position: center;
+}
+
+
+
+.grid1,
+.grid2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 4rem !important;
+}
+
+
+/* .item-image{
+  max-width: 14rem;
+  height: 10rem;
+  overflow: hidden !important;
+  
+  } */
+  
+  .item-image img{
+  max-width: 100% !important;
+  object-fit: contain;
+  height: 100%;
+}
+
+
+
+/* ======== SHOP COMPONENT SECTION======== */
+.cat{
+  position: relative;
+}
+
+.strike{
+  text-decoration: line-through !important;
+}
+
+.cat::after{
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0.7rem;
+  border-radius: 4px;
+  background-color: #db4444;
+}
+
+.cat-label {
+  color: #db4444;
+  
+}
+
+
+
+
+.round{
+  width: 2rem !important;
+  height: 2rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.slick-slide>div {padding: 0 7px;}
+
+.item-image{
+  height: 200px;
+  position: relative;
+  transition: 400ms ease-in-out;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.item-image img{
+  max-width: 100%;
+  object-fit: contain;
+  /* height: 100%; */
+
+}
+
+.discount{
+  position: absolute;
+  background-color: #db4444;
+  padding: 4px 10px;
+  color: #ffffff;
+  border-radius: 4px;
+  top: 10px;
+  left: 10px;
+}
+
+.action{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.add-to-cart{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 4px;
+  font-size: small;
+  background-color: #333333;
+  color: #ffffff;
+  display: none;
+}
+
+
+
+
+.item-image:hover .add-to-cart{
+  display: block !important;;
+  /* transition: all 400ms ease-in-out; */
+}
+
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+  .para,
+  .hero-header{
+    max-width: 100%;
+  }
+
+  .reg-image{
+    /* height: 100%; */
+    min-height: fit-content;
+    width: fit-content;
+    object-fit: contain;
+  
+  }
+}
