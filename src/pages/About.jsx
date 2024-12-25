@@ -7,19 +7,59 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import Headings from '../components/Headings';
 // import Featured from '../components/Featured';
 
 const About = () => {
+
+    const developers = [
+        {
+            id: '1',
+            name: 'Olawoyin Yusuf',
+            image: '../../Images/avatar-ali.png',
+            stack: 'Frontend Development',
+            socials: {
+                twitter: "hello x",
+                insta: "hi insta",
+                linkeIn: "hey LinkeIn",
+            } 
+        },
+        {
+            id: '2',
+            name: 'Keneth Dev',
+            image: '../../Images/avatar-anisha.png',
+            stack: 'Backend Development',
+            socials: {
+                twitter: "hello x",
+                insta: "hi insta",
+                linkeIn: "hey LinkeIn",
+            } 
+        },
+        {
+            id: '2',
+            name: 'Other Dev',
+            image: '../../Images/avatar-shanai.png',
+            stack: 'Backend Development',
+            socials: {
+                twitter: "hello x",
+                insta: "hi insta",
+                linkeIn: "hey LinkeIn",
+            } 
+        },
+    ]
+
+
   return (
-    <div className='my-4'>
+    <div className='py-4 about-section'>
         <div className="container px-2 p-sm-0">
             <div className="gap-4 flex-column-reverse flex-md-row align-items-center d-flex m-0 mt-3 ">
                 <div className="col">
-                <h2 className='fw-bold mb-3'>Our Story</h2>
-                <p >
-                    Launced in 2015, Exclusive is South Asia’s premier online shopping makterplace with an active presense in Bangladesh. Supported by wide range of tailored marketing, data and service solutions, Exclusive has 10,500 sallers and 300 brands and serves 3 millioons customers across the region.
-                    Exclusive has more than 1 Million products to offer, growing at a very fast. Exclusive offers a diverse assotment in categories ranging  from consumer.
-                </p>
+                    <Headings heading={"About Us"} />
+                    <p>Welcome to Pizza Rush, where every slice is made with love and served with a smile. We’re more than just a pizza place—we’re your neighborhood spot for fresh, delicious meals that bring people together. Whether you’re grabbing a quick bite, sharing a family dinner, or celebrating with friends, Pizza Rush is here to make every moment special. <br />
+
+                    We take pride in using only the freshest ingredients to craft pizzas that burst with flavor. From timeless classics like Margherita to bold, gourmet creations, we’ve designed a menu that caters to every craving. Our secret? A perfect blend of tradition and innovation, topped with our signature sauce and baked to perfection. And it’s not just about pizza—our sides, desserts, and drinks complete the experience. <br />
+
+                    At Pizza Rush, you’re not just a customer—you’re family. That’s why we’re committed to fast, friendly service and ensuring every order leaves you smiling. Whether you’re dining in, picking up, or getting delivery, we’re here to make your day better, one slice at a time. So come on in and join the rush—we can’t wait to serve you! 🍕</p>
                 </div>
                 <div className="col">
                     <img src="../../Images/pizz.png" alt="" />
@@ -51,55 +91,31 @@ const About = () => {
             </div>
 
 
-            <div className="grid">
+            <div className="grid container2">
+                {
+                    developers.map((dev)=> (
+                        <div className="item ">
+                            <div className="coloured">
 
-                <div className="item ">
-                    <div className="member-image rounded d-flex align-items-center justify-content-center">
-                        <img src="../../Images/user1.png" alt="" />                   
-                    </div>
+                                <div className="member-image d-flex align-items-center justify-content-center">
+                                    <img src={dev.image} alt="" />                   
+                                </div>
+                            </div>
+                            {/* <h5></h5> */}
 
-                    <div className="item-details d-flex flex-column gap-2 pt-2">
-                        <p className="fw-bold">Olawoyin Gbolahan</p>
-                        <small>Founder & Chairman</small>
-                        <div className="d-flex align-items-center gap-2">
-                            <Link className='nav-link' to="/"><FaXTwitter /></Link>
-                            <Link className='nav-link' to="/"><FaLinkedin /></Link>
-                            <Link className='nav-link' to="/"><FaInstagram /></Link>
+                            <div className="item-details d-flex align-items-center justify-content-center flex-column gap-2 p-3 mt-5">
+                                <p className="fw-bold m-0">{dev.name}</p>
+                                <small>{dev.stack}</small>
+                                <div className="d-flex align-items-center gap-2">
+                                    <Link className='nav-link' to="/"><FaXTwitter /></Link>
+                                    <Link className='nav-link' to="/"><FaLinkedin /></Link>
+                                    <Link className='nav-link' to="/"><FaInstagram /></Link>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    ))
+                }
 
-                <div className="item ">
-                    <div className="member-image rounded d-flex align-items-center justify-content-center">
-                        <img src="../../Images/user2.png" alt="" />                   
-                    </div>
-
-                    <div className="item-details d-flex flex-column gap-2 pt-2">
-                        <p className="fw-bold">Olawoyin Gbolahan</p>
-                        <small>Managing Director</small>
-                        <div className="d-flex text-dark align-items-center gap-2">
-                            <Link className='nav-link' to="/"><FaXTwitter /></Link>
-                            <Link className='nav-link' to="/"><FaLinkedin /></Link>
-                            <Link className='nav-link' to="/"><FaInstagram /></Link>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="item ">
-                    <div className="member-image rounded d-flex align-items-center justify-content-center">
-                        <img src="../../Images/user3.png" alt="" />                   
-                    </div>
-
-                    <div className="item-details d-flex flex-column gap-2 pt-2">
-                        <p className="fw-bold">Olawoyin Gbolahan</p>
-                        <small>Product Designer</small>
-                        <div className="d-flex align-items-center gap-2">
-                            <Link className='nav-link' to="/"><FaXTwitter /></Link>
-                            <Link className='nav-link' to="/"><FaLinkedin /></Link>
-                            <Link className='nav-link' to="/"><FaInstagram /></Link>
-                        </div>
-                    </div>
-                </div>
 
             </div>
 

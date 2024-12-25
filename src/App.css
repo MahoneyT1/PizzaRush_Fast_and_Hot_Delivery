@@ -317,15 +317,39 @@ padding: 7px 1px;
 }
 
 
+.about-section{
+  background-color: #f5f5f5;
+}
+
+
+.item-detials{
+  margin-top: 100px !important;
+}
+
+
+.coloured{
+  background-color: #D96940;
+  position: relative;
+  height: 90px;
+}
+
 
 .member-image{
-  height: 270px;
-  background-color: #f5f5f5;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  overflow: hidden !important;
+  border-radius: 100% !important;
+  border: 3px solid #ffffff;
 }
 
 .member-image img{
   object-fit: contain;
   height: 100%;
+  width: 100%;
   object-position: center;
 }
 
@@ -346,6 +370,17 @@ padding: 7px 1px;
   overflow: hidden !important;
   
   } */
+
+  .grid-item,
+  .item{
+    background-color: #ffffff;
+  }
+
+  .item{
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+  
   
   .item-image img{
   max-width: 100% !important;
