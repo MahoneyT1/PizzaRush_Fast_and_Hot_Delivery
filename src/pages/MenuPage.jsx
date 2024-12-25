@@ -40,7 +40,7 @@ const MenuPage = ({addProductToCart}) => {
                                   <option value="XLarge">XLarge</option>
                                   </select>
                               </form> */}
-                              <button className="button2 p-1 px-3 text-white">Add To cart NGN 14,000.00</button>
+                              <button  onClick={() =>addProductToCart(item)}  className="button2 p-1 px-3 text-white">Add To cart NGN 14,000.00</button>
                       
                         </div>
                       </div>

@@ -4,7 +4,9 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
 
-const Header = ({productsInCart}) => {
+const Header = ({productsInCart,prodLength}) => {
+
+  console.log(prodLength)
   return (
     <header className="header">
       <div className="container p-0">
@@ -39,7 +41,7 @@ const Header = ({productsInCart}) => {
           <div className="col-md-auto d-flex justify-content-end align-items-center gap-3">
             <li className="cart-container">
               <a href="/cart"><AiOutlineShoppingCart size={24} /></a>
-              {/* { productsInCart.length > 0 && (<span className="product-count">{productsInCart.length} </span>	)} */}
+              { prodLength > 0 && (<span className="product-count">{prodLength} </span>	)}
             </li>
             <li>
               <Link to="/menu" className="nav-link">Order Online</Link>

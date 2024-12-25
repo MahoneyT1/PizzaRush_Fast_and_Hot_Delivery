@@ -8,11 +8,11 @@ import { FaWhatsapp } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer class="py-5 footer">
-        <div class="container p-0">
-            <div class="m-0 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 p-0">
+    <footer className="py-5 footer">
+        <div className="container p-0">
+            <div className="m-0 row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 p-0">
 
-                <div class=" d-flex text-center text-lg-start align-items-lg-start align-items-center flex-column gap-3  p-lg-0 mb-3 mb-md-0">
+                <div className=" d-flex text-center text-lg-start align-items-lg-start align-items-center flex-column gap-3  p-lg-0 mb-3 mb-md-0">
                     <a href="/"  className="d-flex col-md-auto gap-2 align-items-center  mb-2 p-0 mb-md-0 text-white text-decoration-none" >
                         <LuPizza size={30} />
                         <b>Pizza_Rush</b>
@@ -72,18 +72,18 @@ const Footer = () => {
                 {/* <h5></h5> */}
 
 
-                <div class=" d-flex text-center text-lg-start  align-items-lg-start align-items-center flex-column gap-2 p-4 p-lg-0 mb-3 mb-md-0">
+                <div className=" d-flex text-center text-lg-start  align-items-lg-start align-items-center flex-column gap-2 p-4 p-lg-0 mb-3 mb-md-0">
                 <li>
                         <b className='nav-link pt-0 text-white fw-bolder'>Subscribe To Our Newsletter</b>
                     </li>
-                    <div class="d-flex align-items-center align-items-md-end ">
-                    <input type="text" class="f" placeholder="Enter Your Email..." />
+                    <div className="d-flex align-items-center align-items-md-end ">
+                    <input type="text" className="f" placeholder="Enter Your Email..." />
                     <button className='button2 text-white'>Subscribe</button>
                     </div>
-                    <div class="d-flex gap-2 link-secondary">
+                    <div className="d-flex gap-2 link-secondary">
                     <small>Copyright 2024. All Rights Reserved</small>
                     </div>
-                    <div class="d-flex gap-2 link-secondary">
+                    <div className="d-flex gap-2 link-secondary">
                     <small>ALx SE Portfolio Project.</small>
                     </div>
                 </div>

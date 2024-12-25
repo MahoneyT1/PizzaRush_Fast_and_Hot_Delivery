@@ -35,7 +35,10 @@ function App() {
 		) || []
 	);
 
-  console.log(productsInCart)
+  const prodLength = productsInCart.length
+
+  // console.log(prodLength)
+  // console.log(productsInCart)
 
   useEffect(() => {
 		localStorage.setItem(
@@ -45,16 +48,62 @@ function App() {
 	}, [productsInCart]);
 
 
+  // const addProductToCart = (product) => {
+	// 	const newProduct = {
+	// 		...product,
+	// 		count: 1,
+	// 	};
+	// 	setProducts([
+	// 		...productsInCart,
+	// 		newProduct,
+	// 	]);
+	// };
+
   const addProductToCart = (product) => {
-    console.log("clicked")
-		const newProduct = {
-			...product,
-			count: 1,
-		};
-		setProducts([
-			...productsInCart,
-			newProduct,
-		]);
+    console.log("clicked");
+    setProducts((prevProducts) => {
+        const existingProduct = prevProducts.find(
+            (item) => item.id === product.id
+        );
+
+        if (existingProduct) {
+            return prevProducts.map((item) =>
+                item.id === product.id
+                    ? { ...item, count: item.count + 1 }
+                    : item
+            );
+        } else {
+            return [...prevProducts, { ...product, count: 1 }];
+        }
+    });
+};
+
+
+
+  const onProductRemove = (product) => {
+		setProducts((oldState) => {
+			const productsIndex =
+				oldState.findIndex(
+					(item) =>
+						item.id === product.id
+				);
+			if (productsIndex !== -1) {
+				oldState.splice(productsIndex, 1);
+			}
+			return [...oldState];
+		});
+	};
+
+
+  const onQuantityChange = (productId,count) => {
+		setProducts((oldState) => {
+			const productsIndex =oldState.findIndex((item) =>item.id === productId);
+			if (productsIndex !== -1) {
+				oldState[productsIndex].count =
+					count;
+			}
+			return [...oldState];
+		});
 	};
 
 
@@ -63,12 +112,13 @@ function App() {
 
   const main = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<SharedLayout />}>
+      <Route path="/" element={<SharedLayout addProductToCart={addProductToCart} prodLength={prodLength} />}>
         <Route
           index
           element={
             <Home 
               addProductToCart={addProductToCart}
+              prodLength={prodLength}
             />
           }
         />
@@ -83,7 +133,7 @@ function App() {
 
         <Route path="about" element={<About />} />
 
-        <Route path="menu" element={<MenuPage />} />
+        <Route path="menu" element={<MenuPage addProductToCart={addProductToCart} />} />
 
         <Route path="map" element={<MapLocator />} />
 
@@ -93,7 +143,11 @@ function App() {
 
         <Route path="toppings" element={<Toppings />} />
 
-        <Route path="cart" element={<Cart />} />
+        <Route path="cart" element={<Cart         productsInCart={productsInCart}
+        onProductRemove={onProductRemove}
+        prodLength={prodLength}
+        onQuantityChange={onQuantityChange}
+        />} />
 
 
           
