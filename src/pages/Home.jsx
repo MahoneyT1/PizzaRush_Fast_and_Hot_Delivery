@@ -5,15 +5,19 @@ import Testimonials from '../components/Testimonials'
 import Footer from '../components/Footer'
 import ShopComponent from '../components/ShopComponent'
 import Featured from '../components/Featured'
+import FAQ from '../components/FAQ'
 
-const Home = () => {
+const Home = ({addProductToCart}) => {
   return (
     <div>
         <Hero />
         {/* <Menu /> */}
-        <ShopComponent />
+        <ShopComponent
+          addProductToCart={addProductToCart}  
+        />
         <Featured />
-        <Testimonials />
+        {/* <Testimonials /> */}
+        {/* <FAQ /> */}
     </div>
   )
 }

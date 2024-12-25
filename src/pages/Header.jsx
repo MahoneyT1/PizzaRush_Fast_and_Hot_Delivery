@@ -4,7 +4,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
 
-const Header = () => {
+const Header = ({productsInCart}) => {
   return (
     <header className="header">
       <div className="container p-0">
@@ -25,19 +25,22 @@ const Header = () => {
               <Link to="menu" className="nav-link ">Menu</Link>
             </li>
             <li>
-              <Link to="specials" className="nav-link ">Specials</Link>
+              <Link to="/pizza" className="nav-link ">Specials</Link>
             </li>
             <li>
               <Link to="/contact" className="nav-link ">Contact Us
               </Link>
             </li>
             <li>
-              <Link to="/about" className="nav-link">About Us</Link>
+              <Link to="/about" className="nav-link d-none d-sm-flex">About Us</Link>
             </li>
           </ul>
 
           <div className="col-md-auto d-flex justify-content-end align-items-center gap-3">
-            <li><a href="nav"><AiOutlineShoppingCart size={24} /></a></li>
+            <li className="cart-container">
+              <a href="/cart"><AiOutlineShoppingCart size={24} /></a>
+              {/* { productsInCart.length > 0 && (<span className="product-count">{productsInCart.length} </span>	)} */}
+            </li>
             <li>
               <Link to="/menu" className="nav-link">Order Online</Link>
             </li>

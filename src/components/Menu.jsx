@@ -1,11 +1,15 @@
 import React from 'react'
 import Data from '../data'
+import Headings from './Headings'
 
 const Menu = () => {
   return (
     <div className='py-4'>
         <div className="container p-0">
             <h2 className='text-center menu fw-bold'>Our Menu</h2>
+
+            <Headings />
+            
             <div className='row row-cols-1 row-cols-sm-2 m-0'>
 
               { 

@@ -3,6 +3,30 @@ import Slider from "react-slick";
 // import { IoIosArrowRoundForward } from "react-icons/io";
 // import { IoIosArrowRoundBack } from "react-icons/io";
 
+
+const testimonials = [
+  {
+    name: "Jane Doe",
+    image: "https://via.placeholder.com/100",
+    quote: "This service is fantastic! It exceeded all my expectations.",
+    role: "CEO, ABC Corp"
+  },
+  {
+    name: "John Smith",
+    image: "https://via.placeholder.com/100",
+    quote: "I couldn't be happier with the results. Highly recommended!",
+    role: "Designer, XYZ Ltd"
+  },
+  {
+    name: "Alice Johnson",
+    image: "https://via.placeholder.com/100",
+    quote: "The team was professional and delivered on time. Great experience!",
+    role: "Manager, LMN Inc"
+  }
+];
+
+
+
 const Testimonials = ({ data, search, header, title, liked, setLiked }) => {
   const slider = React.useRef(null);
 
@@ -43,42 +67,6 @@ const Testimonials = ({ data, search, header, title, liked, setLiked }) => {
     ],
   };
 
-  //   const settings = {
-  //     dots: false,
-  //     infinite: true,
-  //     speed: 500,
-  //     slidesToShow: 4,
-  //     slidesToScroll: 1,
-  //     nextArrow: false,
-  //     prevArrow: false,
-  //     arrows: false,
-  //     responsive: [
-  //       {
-  //         breakpoint: 1024,
-  //         settings: {
-  //           slidesToShow: 3,
-  //           slidesToScroll: 3,
-  //           infinite: true,
-  //           dots: true,
-  //         },
-  //       },
-  //       {
-  //         breakpoint: 600,
-  //         settings: {
-  //           slidesToShow: 2,
-  //           slidesToScroll: 2,
-  //           initialSlide: 2,
-  //         },
-  //       },
-  //       {
-  //         breakpoint: 480,
-  //         settings: {
-  //           slidesToShow: 1,
-  //           slidesToScroll: 1,
-  //         },
-  //       },
-  //     ],
-  //   };
 
   return (
     <div className="my-5 py-4">

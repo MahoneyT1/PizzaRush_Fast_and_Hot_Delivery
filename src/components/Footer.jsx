@@ -83,6 +83,9 @@ const Footer = () => {
                     <div class="d-flex gap-2 link-secondary">
                     <small>Copyright 2024. All Rights Reserved</small>
                     </div>
+                    <div class="d-flex gap-2 link-secondary">
+                    <small>ALx SE Portfolio Project.</small>
+                    </div>
                 </div>
             </div>
         </div>

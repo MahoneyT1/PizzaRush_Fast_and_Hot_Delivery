@@ -17,15 +17,59 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Signup from "./pages/Signup.jsx"
 import MenuPage from "./pages/MenuPage.jsx";
+import MapLocator from "./pages/Map.jsx";
+import YourPizza from "./pages/YourPizza.jsx"
+import Base from "./pages/Base.jsx";
+import Toppings from "./pages/Toppings.jsx";
+import { useEffect, useState } from "react";
+import Cart from "./pages/Cart.jsx";
 
 function App() {
+
+
+  const [productsInCart, setProducts] =useState(
+		JSON.parse(
+			localStorage.getItem(
+				"shopping-cart"
+			)
+		) || []
+	);
+
+  console.log(productsInCart)
+
+  useEffect(() => {
+		localStorage.setItem(
+			"shopping-cart",
+			JSON.stringify(productsInCart)
+		);
+	}, [productsInCart]);
+
+
+  const addProductToCart = (product) => {
+    console.log("clicked")
+		const newProduct = {
+			...product,
+			count: 1,
+		};
+		setProducts([
+			...productsInCart,
+			newProduct,
+		]);
+	};
+
+
+
+
+
   const main = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<SharedLayout />}>
         <Route
           index
           element={
-            <Home />
+            <Home 
+              addProductToCart={addProductToCart}
+            />
           }
         />
 
@@ -41,6 +85,18 @@ function App() {
 
         <Route path="menu" element={<MenuPage />} />
 
+        <Route path="map" element={<MapLocator />} />
+
+        <Route path="pizza" element={<YourPizza />} />
+
+        <Route path="base" element={<Base />} />
+
+        <Route path="toppings" element={<Toppings />} />
+
+        <Route path="cart" element={<Cart />} />
+
+
+          
        
 
        

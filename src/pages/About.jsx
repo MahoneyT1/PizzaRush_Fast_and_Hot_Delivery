@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 const About = () => {
   return (
     <div className='my-4'>
-        <div className="container p-0">
+        <div className="container px-2 p-sm-0">
             <div className="gap-4 flex-column-reverse flex-md-row align-items-center d-flex m-0 mt-3 ">
                 <div className="col">
                 <h2 className='fw-bold mb-3'>Our Story</h2>

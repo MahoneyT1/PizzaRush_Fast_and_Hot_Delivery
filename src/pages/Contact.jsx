@@ -6,7 +6,7 @@ import { VscSend } from "react-icons/vsc";
 const Contact = () => {
   return (
     <div className='contact py-4'>
-        <div className="container2">
+        <div className="container">
             <div className="row m-0 my-4">
                 <div className="col-md-4  contact-info p-4  d-flex flex-column gap-2">
                     <small className='fw-bold'><SlCallOut /> Call To Us</small>

@@ -14,7 +14,7 @@ import { GrCart } from "react-icons/gr";
 import { Link } from "react-router-dom";
 // import ShopHeader from "./ShopHeader";
 
-const ShopComponent = () => {
+const ShopComponent = ({addProductToCart}) => {
 
 
 
@@ -120,7 +120,7 @@ const ShopComponent = () => {
                                 <option value="XLarge">XLarge</option>
                                 </select>
                             </form> */}
-                            <button className="button2 p-1 px-3 text-white">Add To cart NGN 14,000.00</button>
+                            <button onClick={() =>addProductToCart(item)}  className="button2 p-1 px-3 text-white">Add To cart NGN 14,000.00</button>
                     
                       </div>
                     </div>
