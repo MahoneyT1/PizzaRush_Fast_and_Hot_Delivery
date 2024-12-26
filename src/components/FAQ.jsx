@@ -33,8 +33,8 @@ const FAQ = () => {
   };
 
   return (
-    <div className="faq-container py-4">
-      <h2 className="faq-title">Frequently Asked Questions</h2>
+    <div className="container py-4">
+      <h2 className="faq-title ">Frequently Asked Questions</h2>
       <div className="faq-list">
         {faqs.map((faq, index) => (
           <div

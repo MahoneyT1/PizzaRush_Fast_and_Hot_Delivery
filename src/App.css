@@ -17,11 +17,16 @@
   text-decoration: none !important;
   font-family: "Poppins", system-ui;
   /* border: 1px solid red; */
+  /* overflow: auto; */
   /* font-family: "poppins"; */
   /* overflow: auto; */
   text-decoration: none;
   font-family: "Montserrat", sans-serif;
   
+}
+
+.testimonials{
+  overflow: hidden;
 }
 
 
@@ -256,7 +261,9 @@ outline: none !important;
 padding: 7px 1px;
 }
 
-
+.slick-prev, .slick-next {
+  display: none;
+}
 
 /* =======CONTACT STYLES======== */
 .contact {

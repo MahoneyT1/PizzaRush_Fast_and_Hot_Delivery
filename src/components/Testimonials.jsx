@@ -58,6 +58,8 @@ const Testimonials = ({ data, search, header, title, liked, setLiked }) => {
   const settings = {
     dots: true,
     infinite: true,
+    nextArrow: false,
+    prevArrow: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -65,6 +67,7 @@ const Testimonials = ({ data, search, header, title, liked, setLiked }) => {
       {
         breakpoint: 1024,
         settings: {
+          arrows: false,
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
@@ -91,7 +94,7 @@ const Testimonials = ({ data, search, header, title, liked, setLiked }) => {
 
 
   return (
-    <div className="my-5 py-4">
+    <div className="my-4 testimonials py-4">
       <div className="container">
         <h3 className="text-center fw-bold">Our Testimonials</h3>
         <p className="lead text-center">What Our Customers Are Saying</p>
@@ -113,7 +116,7 @@ const Testimonials = ({ data, search, header, title, liked, setLiked }) => {
                             <p className="m-0">{items.role}</p>
                         </div>
                       </div>
-                      <p className="text-muted  mt-2"><LiaQuoteLeftSolid size={30} />{items.quote}<LiaQuoteRightSolid size={30} /></p>
+                      <p className="text-muted  mt-3 mb-1"><LiaQuoteLeftSolid size={30} />{items.quote}<LiaQuoteRightSolid size={30} /></p>
                       <img src="../../Images/rating.png" className="rating-image" alt="" />
                     </div>
                     ))
