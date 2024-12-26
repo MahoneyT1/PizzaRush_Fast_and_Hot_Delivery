@@ -33,7 +33,7 @@ const FAQ = () => {
   };
 
   return (
-    <div className="container py-4">
+    <div className="container2 py-4">
       <h2 className="faq-title ">Frequently Asked Questions</h2>
       <div className="faq-list">
         {faqs.map((faq, index) => (
@@ -42,7 +42,7 @@ const FAQ = () => {
             className={`faq-item ${openIndex === index ? "open" : ""}`}
           >
             <div className="faq-question" onClick={() => toggleFaq(index)}>
-              <h3>{faq.question}</h3>
+              <h6 className="fw-bold">{faq.question}</h6>
               {openIndex === index ? (
                 <AiOutlineMinus size={20} />
               ) : (

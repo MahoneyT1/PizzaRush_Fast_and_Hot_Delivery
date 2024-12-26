@@ -9,6 +9,7 @@ import { FaHeart } from "react-icons/fa";
 // import { MdTrain } from "react-icons/md";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { TbCurrencyNaira } from "react-icons/tb";
 
 import { GrCart } from "react-icons/gr";
 import { Link } from "react-router-dom";
@@ -120,7 +121,7 @@ const ShopComponent = ({addProductToCart}) => {
                                 <option value="XLarge">XLarge</option>
                                 </select>
                             </form> */}
-                            <button onClick={() =>addProductToCart(item)}  className="button2 p-1 px-3 text-white">Add To cart NGN 14,000.00</button>
+                            <button onClick={() =>addProductToCart(item)}  className="button2 p-1 px-3 text-white">Add To cart <TbCurrencyNaira size={20} /> {item.price}</button>
                     
                       </div>
                     </div>

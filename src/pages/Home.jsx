@@ -6,11 +6,12 @@ import Footer from '../components/Footer'
 import ShopComponent from '../components/ShopComponent'
 import Featured from '../components/Featured'
 import FAQ from '../components/FAQ'
+import HeroM from '../components/HeroMotion'
 
 const Home = ({addProductToCart}) => {
   return (
     <div>
-        <Hero />
+        <HeroM />
         {/* <Menu /> */}
         <ShopComponent
           addProductToCart={addProductToCart}  

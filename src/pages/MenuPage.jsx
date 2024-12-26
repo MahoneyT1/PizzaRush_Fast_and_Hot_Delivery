@@ -2,6 +2,7 @@ import React from 'react'
 import Data from '../data'
 import { Link } from 'react-router-dom'
 import Headings from '../components/Headings'
+import { TbCurrencyNaira } from "react-icons/tb";
 
 const MenuPage = ({addProductToCart}) => {
   return (
@@ -40,7 +41,7 @@ const MenuPage = ({addProductToCart}) => {
                                   <option value="XLarge">XLarge</option>
                                   </select>
                               </form> */}
-                              <button  onClick={() =>addProductToCart(item)}  className="button2 p-1 px-3 text-white">Add To cart NGN 14,000.00</button>
+                              <button  onClick={() =>addProductToCart(item)}  className="button2 p-1 px-3 text-white">Add To cart <TbCurrencyNaira size={20} />  {item.price}</button>
                       
                         </div>
                       </div>
@@ -80,7 +81,7 @@ const MenuPage = ({addProductToCart}) => {
                                   <option value="XLarge">XLarge</option>
                                   </select>
                               </form> */}
-                              <button onClick={() =>addProductToCart(item)} className="button2 p-1 px-3 text-white">Add To cart NGN 14,000.00</button>
+                              <button onClick={() =>addProductToCart(item)} className="button2 p-1 px-3 text-white">Add To cart <TbCurrencyNaira size={20} /> {item.price}</button>
                       
                         </div>
                       </div>

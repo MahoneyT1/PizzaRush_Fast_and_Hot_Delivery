@@ -1,5 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { TbCurrencyNaira } from "react-icons/tb";
+import { RiDeleteBinLine } from "react-icons/ri";
+
 
 const Cart = ({productsInCart, onProductRemove,prodLength, onQuantityChange}) => {
 
@@ -44,7 +47,7 @@ const Cart = ({productsInCart, onProductRemove,prodLength, onQuantityChange}) =>
                                 <img src={product.image} width="10px" className='prod-image' loading='lazy' alt="" />
                                 <small>{product.name}</small>
                             </th>
-                            <td style={{ verticalAlign: "middle" }}>NGN {product.price * product.count}</td>
+                            <td style={{ verticalAlign: "middle" }}><TbCurrencyNaira size={20} /> {parseFloat(product.price * product.count)} </td>
                             <td style={{ verticalAlign: "middle" }}>
                                 <select
                                     className="count"
@@ -63,7 +66,7 @@ const Cart = ({productsInCart, onProductRemove,prodLength, onQuantityChange}) =>
                                     })}
                                 </select>
                             </td>
-                            <td style={{ verticalAlign: "middle" }}><button onClick={() => onProductRemove(product)}>Remove</button></td>
+                            <td style={{ verticalAlign: "middle" }}><button onClick={() => onProductRemove(product)}><RiDeleteBinLine size={14} /></button></td>
                             </tr>
                         </tbody>
 
@@ -90,7 +93,7 @@ const Cart = ({productsInCart, onProductRemove,prodLength, onQuantityChange}) =>
                             <p className="fw-bold">Cart Total</p>
                             <div className="d-flex align-items-center justify-content-between">
                                 <small className='fw-bold'>Subtotal</small>
-                                <small>NGN {calculateSubtotal(productsInCart)}</small>
+                                <small><TbCurrencyNaira size={20} />  {calculateSubtotal(productsInCart)}</small>
                             </div>
                             <hr className='m-0' />
                             <div className="d-flex align-items-center justify-content-between">
@@ -100,7 +103,7 @@ const Cart = ({productsInCart, onProductRemove,prodLength, onQuantityChange}) =>
                             <hr className='m-0'/>
                             <div className="d-flex align-items-center justify-content-between">
                                 <small className='fw-bold'>Total</small>
-                                <small>NGN {calculateSubtotal(productsInCart)}</small>
+                                <small><TbCurrencyNaira  size={20}/>  {calculateSubtotal(productsInCart)}</small>
                             </div>
                             <Link to="/checkout" className="nav-link text-white button2 rounded text-center main-btn">Proceed to checkout</Link>
                         </div>
