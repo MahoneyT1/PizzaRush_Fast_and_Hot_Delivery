@@ -16,8 +16,8 @@ const Home = ({addProductToCart}) => {
           addProductToCart={addProductToCart}  
         />
         <Featured />
-        {/* <Testimonials /> */}
-        {/* <FAQ /> */}
+        <Testimonials />
+        <FAQ />
     </div>
   )
 }

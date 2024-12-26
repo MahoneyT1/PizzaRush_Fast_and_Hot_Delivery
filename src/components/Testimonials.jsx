@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Slider from "react-slick";
+import { LiaQuoteRightSolid } from "react-icons/lia";
+import { LiaQuoteLeftSolid } from "react-icons/lia";
 // import { IoIosArrowRoundForward } from "react-icons/io";
 // import { IoIosArrowRoundBack } from "react-icons/io";
 
@@ -8,21 +10,41 @@ const testimonials = [
   {
     name: "Jane Doe",
     image: "https://via.placeholder.com/100",
-    quote: "This service is fantastic! It exceeded all my expectations.",
-    role: "CEO, ABC Corp"
+    quote: "Absolutely delicious! The pizza arrived hot and fresh, and the delivery was super fast. Definitely my new go-to place for pizza.",
+    role: "Customer"
   },
   {
     name: "John Smith",
     image: "https://via.placeholder.com/100",
-    quote: "I couldn't be happier with the results. Highly recommended!",
-    role: "Designer, XYZ Ltd"
+    quote: "I’ve tried many pizza places, but this one tops them all! Great variety, fantastic taste, and the delivery was on time. Highly recommend!",
+    role: "Customer"
   },
   {
     name: "Alice Johnson",
     image: "https://via.placeholder.com/100",
-    quote: "The team was professional and delivered on time. Great experience!",
-    role: "Manager, LMN Inc"
-  }
+    quote: "The best pizza I’ve had in a long time. The crust is perfect, and the toppings are always fresh. 5 stars all around!",
+    role: "Customer"
+  },
+  {
+    name: "David Majeed",
+    image: "https://via.placeholder.com/100",
+    quote: "If you’re craving pizza, this is the place to order from! The quality is unmatched, and the customer service is top-notch.",
+    role: "Customer"
+  },
+  {
+    name: "Emily Racheal",
+    image: "https://via.placeholder.com/100",
+    quote: "Every time I order, the pizza is always fresh, flavorful, and hot. Plus, the delivery drivers are always polite and efficient.",
+    role: "Customer"
+  },
+  {
+    name: "Sarah Mendel",
+    image: "https://via.placeholder.com/100",
+    quote: "Fast, friendly service and mouth-watering pizzas! I love how easy it is to order, and the delivery is always prompt.",
+    role: "Customer"
+  },
+
+
 ];
 
 
@@ -71,61 +93,39 @@ const Testimonials = ({ data, search, header, title, liked, setLiked }) => {
   return (
     <div className="my-5 py-4">
       <div className="container">
+        <h3 className="text-center fw-bold">Our Testimonials</h3>
+        <p className="lead text-center">What Our Customers Are Saying</p>
         <div className="all-items mt-3">
-          <div className="slider-container mt-4">
+          <div className="slider-container mt-5">
             <div>
               <Slider className="sliderr" ref={slider} {...settings}>
-                <div class="box border text-center mt-4 mt-md-0 p-3">
-                  <div class="profile">
-                    <img src="../images/avatar-anisha.png" alt="" />
-                  </div>
-                  <h4>Anisha Li</h4>
-                  <p class="text-muted  mt-2">
-                    “Manage has supercharged our team’s workflow. The ability to
-                    maintain visibility on larger milestones at all times keeps
-                    everyone motivated.”
-                  </p>
-                </div>
 
-                <div class="box border text-center mt-4 mt-md-0 p-3">
-                  <div class="profile">
-                    <img src="../images/avatar-ali.png" alt="" />
-                  </div>
-                  <h4>Ali Bravo</h4>
-                  <p class="text-muted mt-2">
-                    {" "}
-                    “We have been able to cancel so many other subscriptions
-                    since using Manage. There is no more cross-channel confusion
-                    and everyone is much more focused.”
-                  </p>
-                </div>
+                
 
-                <div class="box border text-center mt-4 mt-md-0 p-3">
-                  <div class="profile">
-                    <img src="../images/avatar-richard.png" alt="" />
-                  </div>
-                  <h4>Richard Watts</h4>
-                  <p class="text-muted mt-2">
-                    “Manage allows us to provide structure and process. It keeps
-                    us organized and focused. I can’t stop recommending them to
-                    everyone I talk to!”
-                  </p>
-                </div>
+                {
+                  testimonials.map(items => (
+                    <div key={items.role} className="box mt-4 mt-md-0 p-4">
+                      <div className="profile d-flex align-items-center gap-2">
+                        <img src="../images/avatar-anisha.png" alt="" />
+                        
+                        <div className="d-flex flex-column gap-1">
+                            <h4 className="m-0 p-0">{items.name}</h4>
+                            <p className="m-0">{items.role}</p>
+                        </div>
+                      </div>
+                      <p className="text-muted  mt-2"><LiaQuoteLeftSolid size={30} />{items.quote}<LiaQuoteRightSolid size={30} /></p>
+                      <img src="../../Images/rating.png" className="rating-image" alt="" />
+                    </div>
+                    ))
+                }
 
-                <div class="box border text-center mt-4 mt-md-0 p-3">
-                  <div class="profile">
-                    <img src="../images/avatar-shanai.png" alt="" />
-                  </div>
-                  <h4>Shanai Gough</h4>
-                  <p class="text-muted mt-2">
-                    “Their software allows us to track, manage and collaborate
-                    on our projects from anywhere. It keeps the whole team
-                    in-sync without being intrusive.”
-                  </p>
-                </div>
+
+                
               </Slider>
 
               
+
+
             </div>
           </div>
         </div>

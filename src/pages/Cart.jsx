@@ -44,8 +44,8 @@ const Cart = ({productsInCart, onProductRemove,prodLength, onQuantityChange}) =>
                                 <img src={product.image} width="10px" className='prod-image' loading='lazy' alt="" />
                                 <small>{product.name}</small>
                             </th>
-                            <td>NGN {product.price * product.count}</td>
-                            <td>
+                            <td style={{ verticalAlign: "middle" }}>NGN {product.price * product.count}</td>
+                            <td style={{ verticalAlign: "middle" }}>
                                 <select
                                     className="count"
                                     value={product.count}
@@ -63,7 +63,7 @@ const Cart = ({productsInCart, onProductRemove,prodLength, onQuantityChange}) =>
                                     })}
                                 </select>
                             </td>
-                            <td><button onClick={() => onProductRemove(product)}>Remove</button></td>
+                            <td style={{ verticalAlign: "middle" }}><button onClick={() => onProductRemove(product)}>Remove</button></td>
                             </tr>
                         </tbody>
 
