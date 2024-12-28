@@ -1,5 +1,9 @@
-from django.db import models
+"""Pizza module file, Pizza Table in database schema
+"""
+
 import uuid
+
+from django.db import models
 
 
 class Pizza(models.Model):
