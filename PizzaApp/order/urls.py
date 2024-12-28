@@ -1,4 +1,8 @@
+"""Urls routes for the Order class /Table
+"""
+
 from django.urls import path
+
 from .views import OrderViewList, OrderDetailView
 
 urlpatterns = [
