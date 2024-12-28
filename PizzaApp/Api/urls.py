@@ -1,6 +1,10 @@
+"""Users api view routes
+specifies routes in user table
+"""
 from django.urls import path
-from .views import UserListView, UserDetailView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from .views import UserListView, UserDetailView
+
 
 urlpatterns = [
     path('api/token/', view=TokenObtainPairView.as_view(), name='token_obtain_pair'),
