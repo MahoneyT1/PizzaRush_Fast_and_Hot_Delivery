@@ -23,6 +23,13 @@ import Base from "./pages/Base.jsx";
 import Toppings from "./pages/Toppings.jsx";
 import { useEffect, useState } from "react";
 import Cart from "./pages/Cart.jsx";
+import AdminDashboard from "./pages/Admin/AdminDashboard.jsx";
+import Orders from "./pages/Admin/Orders.jsx";
+import UserManagement from "./pages/Admin/UserManagement.jsx";
+import PizzaManagement from "./pages/Admin/PizzaManagement.jsx";
+import AdminLayout from "./components/AdminLayout.jsx";
+import Reports from "./pages/Admin/Reports.jsx";
+import User from "./pages/User.jsx";
 
 function App() {
 
@@ -47,17 +54,6 @@ function App() {
 		);
 	}, [productsInCart]);
 
-
-  // const addProductToCart = (product) => {
-	// 	const newProduct = {
-	// 		...product,
-	// 		count: 1,
-	// 	};
-	// 	setProducts([
-	// 		...productsInCart,
-	// 		newProduct,
-	// 	]);
-	// };
 
   const addProductToCart = (product) => {
     console.log("clicked");
@@ -131,6 +127,11 @@ function App() {
 
         <Route path="contact" element={<Contact />} />
 
+        <Route path="profile" element={<User />} />
+
+
+        {/* <Route path="admin" element={<AdminDashboard />} /> */}
+
         <Route path="about" element={<About />} />
 
         <Route path="menu" element={<MenuPage addProductToCart={addProductToCart} />} />
@@ -143,15 +144,33 @@ function App() {
 
         <Route path="toppings" element={<Toppings />} />
 
-        <Route path="cart" element={<Cart         productsInCart={productsInCart}
-        onProductRemove={onProductRemove}
-        prodLength={prodLength}
-        onQuantityChange={onQuantityChange}
+        <Route path="cart" element={<Cart    
+              productsInCart={productsInCart}
+              onProductRemove={onProductRemove}
+              prodLength={prodLength}
+              onQuantityChange={onQuantityChange}
         />} />
 
 
           
        
+
+
+
+
+        <Route path="admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          {/* <Route path=":name" element={<ProductDetail />} /> */}
+
+              
+          <Route path="orders" element={<Orders />} />
+
+          <Route path="users" element={<UserManagement />} />
+
+          <Route path="shop" element={<PizzaManagement />} />
+
+          <Route path="report" element={<Reports />} />
+        </Route>
 
        
 
