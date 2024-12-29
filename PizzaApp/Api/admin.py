@@ -11,4 +11,5 @@ from .models import CustomUser
 class CustomAdminUser(admin.ModelAdmin):
     """Registers the User model in admin site"""
 
-    list_display = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'location']
+    list_display = ['id', 'first_name', 'last_name', 'email',
+                    'phone_number', 'location', 'username']
