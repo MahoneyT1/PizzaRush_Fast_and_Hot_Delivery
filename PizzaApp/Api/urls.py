@@ -2,8 +2,12 @@
 specifies routes in user table
 """
 from django.urls import path
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import UserListView, UserDetailView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from .authentication import LoginView, LogoutView
+
+
 
 
 urlpatterns = [
@@ -13,4 +17,6 @@ urlpatterns = [
     path('users/<str:pk>/', view=UserDetailView.as_view()),
     path('users/orders/', view=UserDetailView.as_view()),
     path('users/<str:pk>/orders/', view=UserDetailView.as_view()),
+    path('api/login/', view=LoginView.as_view(), name='api-login'),
+    path('api/logout/', view=LogoutView.as_view(), name='api-logout')
 ]

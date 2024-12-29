@@ -3,13 +3,16 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from .serializers import CustomerUserSerializer
 from .models import CustomUser
 
 
+
 class UserListView(APIView):
     """Lists users """
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         """Sends a friend request to get the list of users in the system"""
