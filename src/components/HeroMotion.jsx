@@ -50,7 +50,7 @@ const HeroM = () => {
               transition={{ duration: 1 }}
             >
               Fresh, hot, and loaded with flavor—your perfect pizza is just a
-              click away. Order now and we’ll deliver it right to your door!
+              click away. Order now and we’ll deliver it right to your door!🍕
             </motion.p>
 
             <motion.div
@@ -59,7 +59,7 @@ const HeroM = () => {
               transition={{ duration: 1 }}
             >
               <button className="d-inline-block text-white button">
-                Order Now
+                Order Now 
               </button>
               <button className="d-inline-block text-white button2">
                 See Menu
