@@ -14,5 +14,5 @@ class CustomerUserSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta data customization"""
         model = CustomUser
-        fields = ['id', 'email', 'orders', 'first_name', 'last_name']
+        fields = ['id', 'email', 'orders', 'first_name', 'last_name', 'image']
         

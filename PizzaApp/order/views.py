@@ -1,22 +1,25 @@
 """Views for Order Tables / Class
 """
-
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Order
 from .serializers import OrderSerializer
+from .permissions import IsOwnerOrReadOnly
 
 
 class OrderViewList(APIView):
     """view class for listing all orders in the database"""
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
     def get(self, request):
         """Handles get request"""
 
-        # pylint: disable=unused-argument
         orders = Order.objects.all() # pylint: disable=no-member
+
+        self.check_object_permissions(request=request, obj=orders,)
 
         # serialize extrated data
         serializer = OrderSerializer(orders, many=True)
@@ -38,6 +41,7 @@ class OrderDetailView(APIView):
     Updates an order by Id
     Deletes an order Order by Id
     """
+    permission_classes = [IsAuthenticated]
 
     def get_object(self, pk):
         """Gets an Order object by Id"""
@@ -52,8 +56,8 @@ class OrderDetailView(APIView):
 
         # pylint: disable=unused-argument
         order = self.get_object(pk=pk)
-
         if order:
+            self.check_object_permissions(request=request, obj=order)
             serializer = OrderSerializer(order)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -62,6 +66,7 @@ class OrderDetailView(APIView):
         """Updates an Order instance"""
 
         order = self.get_object(pk=pk)
+        self.check_object_permissions(request=request, obj=order)
         serializer = OrderSerializer(order, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -70,10 +75,10 @@ class OrderDetailView(APIView):
 
     def delete(self, request, pk):
         """Deletes an order by id"""
-
-        # pylint: disable=unused-argument
         order_to_delete = self.get_object(pk=pk)
         if order_to_delete:
+            self.check_object_permissions(request=request, obj=order_to_delete)
+
             order_to_delete.delete()
             return Response(status=status.HTTP_200_OK)
 

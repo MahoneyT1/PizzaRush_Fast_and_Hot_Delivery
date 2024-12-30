@@ -15,16 +15,11 @@ class CustomUser(AbstractUser):
     last_name = models.CharField(max_length=60, blank=False, null=False)
     location = models.CharField(max_length=300, blank=False, null=False)
     username = models.CharField(max_length=100, unique=True, blank=True, null=True)
+    image = models.ImageField(upload_to='users/images/', blank=True, null=True)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
 
-    def save(self, *args, **kwargs):
-        """make a username for user class"""
-        if not self.username:
-            self.username = f"{self.first_name.lower()}.{self.last_name.lower()}"
-        super().save(*args, **kwargs)
-                            
-
     class Meta:
+        """Models Metadata"""
         app_label = 'Api'

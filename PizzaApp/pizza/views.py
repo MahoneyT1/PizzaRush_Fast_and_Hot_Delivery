@@ -3,6 +3,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from .serializers import PizzaSerializer
 from .models import Pizza
@@ -10,6 +12,8 @@ from .models import Pizza
 
 class PizzaListView(APIView):
     """Pizza view representation"""
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
 
     def get(self, request):
         """Sends a get request to Pizza table and extract all data on
@@ -41,6 +45,7 @@ class PizzaDetailView(APIView): # pylint: disable=no-member
     Updates an order by Id
     Deletes an order Order by Id
     """
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_object(self, pk):
         """Gets Pizza object by id"""

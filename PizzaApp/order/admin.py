@@ -11,3 +11,4 @@ class OrderAdmin(admin.ModelAdmin):
     """Select what appears as a model fields in the frontend
     """
     list_display = ['id', 'name', 'status', 'description', 'pizza', 'user']
+
