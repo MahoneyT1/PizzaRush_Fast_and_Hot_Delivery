@@ -15,6 +15,7 @@ class CustomerUserSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta data customization"""
         model = CustomUser
+
         fields = ['id', 'username', 'email', 'orders', 'first_name', 'last_name', 'password', 'location']
 
     def validate_username(self, value):
@@ -37,3 +38,6 @@ class CustomerUserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+
+        fields = ['id', 'email', 'orders', 'first_name', 'last_name', 'image']
+        
