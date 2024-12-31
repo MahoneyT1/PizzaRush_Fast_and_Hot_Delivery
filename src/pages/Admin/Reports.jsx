@@ -52,8 +52,8 @@ const Reports = () => {
           <Sidebar />
 
           <div className="col col-md-9">
-            <div className="reports">
-              <h2>Reports</h2>
+            <div className="">
+              <h4>Reports</h4>
 
               {/* Metrics Overview */}
               <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 m-0 my-2 mb-3">

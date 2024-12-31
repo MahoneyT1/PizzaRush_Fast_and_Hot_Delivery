@@ -259,6 +259,31 @@ border: none;
 border-bottom: 1px solid #ccc;
 outline: none !important;
 padding: 7px 1px;
+width: 100%;
+}
+
+.input-field {
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.icon{
+  position: absolute;
+  right: 0;
+  top: 10px;
+}
+
+.error_m{
+  position: absolute;
+  left: 0;
+  bottom: -1.1rem;
+  color: red;
+  z-index: 9999;
+}
+
+.input-error{
+  border-color: red !important;
+  color: red;
 }
 
 .slick-prev, .slick-next {
