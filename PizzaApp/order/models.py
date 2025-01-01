@@ -24,7 +24,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'orders', blank=True, null=True)
     status = models.CharField(max_length=30, choices=STATUS,
                               default='Picked-up', null=True, blank=False)
-    pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE, related_name='orders', blank=True)
+    pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE, related_name='orders', blank=True, null=False)
 
     def __str__(self):
         """Representation of the Order in string"""
