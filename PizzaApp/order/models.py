@@ -5,20 +5,23 @@ import uuid
 
 from django.db import models
 from pizza.models import Pizza
-from Api.models import CustomUser
+from User.models import User
 
 class Order(models.Model):
     """Table/Class representation of Table Order"""
 
     STATUS = ([
-        ("Picked-up", "On Transit"),
-        ("Delivered", "Received")
+        ("Paid", "Paid"),
+        ("Confirmed", "Confirmed"),
+        ("On route", "On route"),
+        ("Delivered", "Received"),
+        ("Received", "Received")
     ])
 
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, blank=True, null=False)
     name = models.CharField(max_length=100, blank=False, null=False)
     description = models.CharField(max_length=200, null=False, blank=False)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name= 'orders', blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'orders', blank=True, null=True)
     status = models.CharField(max_length=30, choices=STATUS,
                               default='Picked-up', null=True, blank=False)
     pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE, related_name='orders', blank=True)
