@@ -2,11 +2,16 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 
 class LoginView(APIView):
     """Login view class that handles the login authentication
     """
+
+    
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+
     def post(self, request):
         """Sends a request to login, with data in the body of the request
         """

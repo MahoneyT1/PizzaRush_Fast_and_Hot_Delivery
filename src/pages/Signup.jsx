@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from "react-hot-toast";
 import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import * as Yup from "yup";
@@ -16,7 +15,7 @@ const Signup = () => {
     const [loading, setLoading] = useState(false);
     const [errorM, setErrorM] = useState({});
 
-    console.log(errorM)
+    
 
 
     const initialValues = {
@@ -164,7 +163,7 @@ const Signup = () => {
                   variants={fadeUp(0.7)} // Delay for Username field
                 />
                     {
-                      formData.touched.username &&  formData.errors.username && errorM.username ? <MdErrorOutline size="20" className='icon' color="red" /> : null
+                      formData.touched.username &&  formData.errors.username ? <MdErrorOutline size="20" className='icon' color="red" /> : null
                     }
                 
                     {

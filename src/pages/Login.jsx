@@ -1,8 +1,77 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import * as Yup from "yup";
+import { MdErrorOutline } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+  const [errorM, setErrorM] = useState({});
+
+  const initialValues = {
+    username : "",
+    password : ""
+  }
+
+  const onSubmit = async(values, {resetForm}) => {
+    if(validationSchema){
+      setLoading(true)
+      try {
+        const response = await axios.post('http://localhost:8000/api/login/', values)
+        console.log("Response:", response.data);          
+        resetForm({ values: ""})
+        setErrorM({})
+        navigate('/')
+        // return toast.success("Account Created successfully, You can now login.")
+        console.log("all fine")
+        
+      } catch (error) {
+        if (error.response && error.response.data) {
+          const errors = error.response.data;
+          setErrorM(errors)
+          console.log(errors)
+          // Loop through the errors and display each in a toast
+          // for (const key in errors) {
+          //   let message = errors[key][0]; 
+          //   if (key === "email") {
+          //     message = "Email already taken.";
+          //   } else if (key === "username") {
+          //     message = "Username already taken.";
+          //   }
+          //   toast.error(`${message}`);
+          // }
+        }
+
+          
+        else {
+          console.error("Unknown error:", error);
+        }
+      }
+
+    }
+  }
+
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().email("Invalid email format").required("Email is required"),
+    password: Yup.string().required("Password is required"),
+  });
+
+  const formData = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema
+})
+
+
+
+
   // Animation variants
   const slideInLeft = {
     hidden: { opacity: 0, x: -100 },
@@ -50,6 +119,8 @@ const Login = () => {
               className="user-reg-form d-flex flex-column gap-2"
               initial="hidden"
               whileInView="visible"
+              method="POST"
+              onSubmit={formData.handleSubmit}
               viewport={{ once: true }}
             >
               <div>
@@ -67,21 +138,51 @@ const Login = () => {
               </div>
 
               {/* Input fields with sequential fade-up */}
-              <motion.input
-                type="email"
-                placeholder="Email"
-                variants={fadeUp(0.7)} // Delay for Email field
-              />
-              <motion.input
-                type="password"
-                placeholder="Password"
-                variants={fadeUp(0.8)} // Delay for Password field
-              />
+              <div className="input-field">
+                <motion.input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={ formData.values.email}
+                  onBlur={formData.handleBlur}
+                  onChange={formData.handleChange}
+                  variants={fadeUp(0.7)} // Delay for Email field
+                />
+                    {
+                      formData.touched.email &&  formData.errors.email ? <MdErrorOutline size="20" className='icon' color="red" /> : null
+                    }
+                
+                    {
+                      formData.touched.email &&  formData.errors.email ? <small className='error_m'>{formData.errors.email}</small> : null
+                    }
+              </div>
+
+
+              <div className="input-field">
+                <motion.input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={ formData.values.password}
+                  onBlur={formData.handleBlur}
+                  onChange={formData.handleChange}
+                  variants={fadeUp(0.8)} // Delay for Password field
+                />
+
+                    {
+                      formData.touched.password &&  formData.errors.password ? <MdErrorOutline size="20" className='icon' color="red" /> : null
+                    }
+                
+                    {
+                      formData.touched.password &&  formData.errors.password ? <small className='error_m'>{formData.errors.password}</small> : null
+                    }
+              </div>
 
               {/* Buttons with sequential fade-up */}
               <motion.button
                 className="mt-2 main-btn button2 text-white"
                 variants={fadeUp(0.9)} // Delay for Login button
+                type="submit"
               >
                 Login
               </motion.button>
@@ -93,6 +194,7 @@ const Login = () => {
           </motion.div>
         </motion.div>
       </div>
+      <Toaster />
     </div>
   );
 };
