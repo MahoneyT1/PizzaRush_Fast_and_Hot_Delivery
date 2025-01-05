@@ -1,82 +1,94 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CardInformationSerializer
-import stripe
+from rest_framework import status
+from django.conf import settings
+from paystackapi.transaction import Transaction
+from django.utils.text import slugify
 
 
-class PaymentAPI(APIView):
-    serializer_class = CardInformationSerializer
+class InitializePaymentView(APIView):
+    """Initiate a paystack transaction"""
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        response = {}
-        if serializer.is_valid():
-            data_dict = serializer.data
-          
-      stripe.api_key = 'your-key-goes-here'
-      response = self.stripe_card_payment(data_dict=data_dict)
+        """Handles POST requests to initiate payment"""
 
-        else:
-            response = {'errors': serializer.errors, 'status':
-                status.HTTP_400_BAD_REQUEST
-                }
-                
-        return Response(response)
+        data = request.data
 
-    def stripe_card_payment(self, data_dict):
+        email = data.get('email')
+        amount = data.get('amount')
+
+        # Validate input
+        if not email or not amount:
+            return Response({"error": "Email and amount are required."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
         try:
-            card_details = (
-                type="card",
-                card={
-                    "number": data_dict['card_number'],
-                    "exp_month": data_dict['expiry_month'],
-                    "exp_year": data_dict['expiry_year'],
-                    "cvc": data_dict['cvc'],
-                },
+            # Ensure amount is a valid positive integer
+            amount = int(amount)
+            if amount <= 0:
+                raise ValueError("Amount must be greater than 0.")
+        except ValueError:
+            return Response({"error": "Amount must be a valid positive integer."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Generate a valid reference
+        sanitized_email = slugify(email.split('@')[0])  # Create a safe version of the email prefix
+        reference = f'Payment-{sanitized_email}-{amount}'
+
+        try:
+            response = Transaction.initialize(
+                reference=reference,
+                email=email,
+                amount=amount * 100  # Convert amount to kobo
             )
-            #  you can also get the amount from databse by creating a model
-            payment_intent = stripe.PaymentIntent.create(
-                amount=10000, 
-                currency='inr',
-            )
-            payment_intent_modified = stripe.PaymentIntent.modify(
-                payment_intent['id'],
-                payment_method=card_details['id'],
-            )
-            try:
-                payment_confirm = stripe.PaymentIntent.confirm(
-                    payment_intent['id']
+            
+            if response['status']:
+                return Response(
+                    {
+                        "status": "Success",
+                        "authorization_url": response['data']['authorization_url'],
+                        "reference": response['data']['reference']
+                    },
+                    status=status.HTTP_200_OK
                 )
-                payment_intent_modified = stripe.PaymentIntent.retrieve(payment_intent['id'])
-            except:
-                payment_intent_modified = stripe.PaymentIntent.retrieve(payment_intent['id'])
-                payment_confirm = {
-                    "stripe_payment_error": "Failed",
-                    "code": payment_intent_modified['last_payment_error']['code'],
-                    "message": payment_intent_modified['last_payment_error']['message'],
-                    'status': "Failed"
-                }
-            if payment_intent_modified and payment_intent_modified['status'] == 'succeeded':
-                response = {
-                    'message': "Card Payment Success",
-                    'status': status.HTTP_200_OK,
-                    "card_details": card_details,
-                    "payment_intent": payment_intent_modified,
-                    "payment_confirm": payment_confirm
-                }
             else:
-                response = {
-                    'message': "Card Payment Failed",
-                    'status': status.HTTP_400_BAD_REQUEST,
-                    "card_details": card_details,
-                    "payment_intent": payment_intent_modified,
-                    "payment_confirm": payment_confirm
-                }
-        except:
-            response = {
-                'error': "Your card number is incorrect",
-                'status': status.HTTP_400_BAD_REQUEST,
-                "payment_intent": {"id": "Null"},
-                "payment_confirm": {'status': "Failed"}
-            }
-        return response
+                return Response(
+                    {"status": "failed", "message": response['message']},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        except Exception as e:
+            return Response(
+                {"error": "An error occurred during transaction initialization.", "details": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
+class VerifyPaymentView(APIView):
+    """Verify a paystack transaction"""
+
+    def get(self, request):
+        """Handles GET requests to verify payment"""
+        
+        reference = request.query_params.get("reference")
+
+        if not reference:
+            return Response({"error": "Reference is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            response = Transaction.verify(reference)
+
+            if response["status"] and response["data"]["status"] == "success":
+                return Response(
+                    {"status": "success", "data": response["data"]},
+                    status=status.HTTP_200_OK,
+                )
+            else:
+                return Response(
+                    {"status": "failed", "message": response.get("message", "Payment failed.")},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        except Exception as e:
+            return Response(
+                {"error": "An error occurred during payment verification.", "details": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )

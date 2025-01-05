@@ -25,4 +25,6 @@ urlpatterns = [
     path('', include('User.urls')),
     path('', include('pizza.urls')),
     path('', include('order.urls')),
+    path('', include('Cart.urls')),
+    path('', include('Payment_service.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

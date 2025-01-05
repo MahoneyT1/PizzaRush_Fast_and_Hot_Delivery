@@ -7,6 +7,10 @@ from django.db import models
 from pizza.models import Pizza
 from User.models import User
 
+def generate_uuid():
+    return str(uuid.uuid4())
+
+
 class Order(models.Model):
     """Table/Class representation of Table Order"""
 
@@ -18,7 +22,7 @@ class Order(models.Model):
         ("Received", "Received")
     ])
 
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, blank=True, null=False)
+    id = models.UUIDField(default=generate_uuid, primary_key=True, blank=True, null=False)
     name = models.CharField(max_length=100, blank=False, null=False)
     description = models.CharField(max_length=200, null=False, blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'orders', blank=True, null=True)

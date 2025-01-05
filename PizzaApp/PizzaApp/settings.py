@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'order',
     'stripe',
-    'User'
+    'User',
+    'Cart',
+    'Payment_service'
 ]
 
 MIDDLEWARE = [
@@ -170,5 +172,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # stripe payment settings
-STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
-STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
+
+PAYSTACK_PUBLIC_KEY = config("PAYSTACK_PUBLIC_KEY")
+PAYSTACK_SECRET_KEY = config("PAYSTACK_SECRET_KEY")
