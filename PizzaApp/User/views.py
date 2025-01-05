@@ -26,7 +26,7 @@ class UserListView(APIView):
 
     # permission_classes = [IsAuthenticated]
 
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get(self, request):
@@ -36,13 +36,18 @@ class UserListView(APIView):
         users = User.objects.all()
         if users:
             serializer = UserSerializer(users, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            response = {
+                "message" : "All Users",
+                "data" : serializer.data
+            }
+            return Response(data=response, status=status.HTTP_200_OK)
         raise Http404
 
     def post(self, request):
         """Sends a post request and acccepts data for pesistence
         deserializes json to python dict
         """
+        
 
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -55,7 +60,7 @@ class UserDetailView(APIView):
     """User detailed view, included relatioted tables route
     eg http://api/users/route
     """
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get_object(self, pk):
         """Fetches obj by the id=pk"""
@@ -72,7 +77,7 @@ class UserDetailView(APIView):
 
         if user:
             serializer = UserSerializer(user)
-            return Response(serializer.data['orders'], status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, pk):

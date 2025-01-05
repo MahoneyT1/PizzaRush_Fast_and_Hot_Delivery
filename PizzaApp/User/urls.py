@@ -13,7 +13,6 @@ urlpatterns = [
     path('users/<str:pk>/orders/', view=UserOrderViewList.as_view()),
     path('users/<str:user_id>/orders/<str:order_id>/', view=UserOrderDetailView.as_view()),
 
-    
     path('api/token/', view=TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', view=TokenRefreshView.as_view(), name='token_refresh'),
 

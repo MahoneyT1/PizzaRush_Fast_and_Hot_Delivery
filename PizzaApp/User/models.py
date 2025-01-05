@@ -12,13 +12,13 @@ class User(AbstractUser):
     """
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, blank=True, null=False)
     email = models.EmailField(unique=True, blank=False, null=False)
-    first_name = models.CharField(max_length=60, blank=False, null=False)
-    last_name = models.CharField(max_length=60, blank=False, null=False)
+    first_name = models.CharField(max_length=60, blank=True, null=True)
+    last_name = models.CharField(max_length=60, blank=True, null=True)
     phone_number = models.CharField(max_length=12, unique=True, blank=True, null=True)
-    address = models.CharField(max_length=300, blank=False, null=False)
+    address = models.CharField(max_length=300, blank=True, null=True)
     username = models.CharField(max_length=100, unique=True, blank=False, null=False)
 
     image = models.ImageField(upload_to='users/images/', blank=True, null=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'address', 'password', 'username', 'order'] 
+    REQUIRED_FIELDS = ['password', 'username'] 
