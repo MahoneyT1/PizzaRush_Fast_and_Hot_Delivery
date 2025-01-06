@@ -5,12 +5,16 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+def generate_uuid():
+    return str(uuid.uuid4())
+
 
 class User(AbstractUser):
     """Main User table for DB
     mandatory fields [id, username, email, password]
     """
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, blank=True, null=False)
+
+    id = models.UUIDField(default=generate_uuid, primary_key=True, blank=True, null=False)
     email = models.EmailField(unique=True, blank=False, null=False)
     first_name = models.CharField(max_length=60, blank=True, null=True)
     last_name = models.CharField(max_length=60, blank=True, null=True)
@@ -21,4 +25,7 @@ class User(AbstractUser):
     image = models.ImageField(upload_to='users/images/', blank=True, null=True)
 
     USERNAME_FIELD = 'email'
+
     REQUIRED_FIELDS = ['password', 'username'] 
+
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'address', 'password', 'username'] 

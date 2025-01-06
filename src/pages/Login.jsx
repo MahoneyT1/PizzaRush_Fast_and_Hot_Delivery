@@ -7,6 +7,7 @@ import toast, { Toaster } from "react-hot-toast";
 import * as Yup from "yup";
 import { MdErrorOutline } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode';
 
 const Login = () => {
 
@@ -20,17 +21,55 @@ const Login = () => {
     password : ""
   }
 
+
+
+  const decodeToken = (token) => {
+    try {
+      const decoded = jwtDecode(token);
+      console.log('Decoded Token:', decoded);
+      return decoded;
+    } catch (err) {
+      console.error('Invalid token', err);
+      return null;
+    }
+  };
+
   const onSubmit = async(values, {resetForm}) => {
     if(validationSchema){
       setLoading(true)
       try {
-        const response = await axios.post('http://localhost:8000/api/login/', values)
-        console.log("Response:", response.data);          
-        resetForm({ values: ""})
-        setErrorM({})
-        navigate('/')
+        const response = await axios.post('http://localhost:8000/api/token/', values)
+        console.log("Response:", response.data); 
+
+        const { access, refresh } = response.data;
+
+
+        // Decode the access token
+        const userInfo = decodeToken(access);
+        console.log('User Info from Token:', userInfo);
+        const id = userInfo.user_id
+
+        // Store tokens
+        localStorage.setItem('accessToken', access);
+        localStorage.setItem('refreshToken', refresh);
+        
+        const userResponse = await axios.get(`http://localhost:8000/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${access}`,
+          },
+        });
+
+
+        console.log('User Info:', userResponse.data);
+        alert('Login successful!');
+
+
+
+        // resetForm({ values: ""})
+        // setErrorM({})
+        // navigate('/')
         // return toast.success("Account Created successfully, You can now login.")
-        console.log("all fine")
+        // console.log("all fine")
         
       } catch (error) {
         if (error.response && error.response.data) {
@@ -143,7 +182,7 @@ const Login = () => {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  value={ formData.values.email}
+                  value={formData.values.email}
                   onBlur={formData.handleBlur}
                   onChange={formData.handleChange}
                   variants={fadeUp(0.7)} // Delay for Email field
@@ -163,7 +202,7 @@ const Login = () => {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  value={ formData.values.password}
+                  value={formData.values.password}
                   onBlur={formData.handleBlur}
                   onChange={formData.handleChange}
                   variants={fadeUp(0.8)} // Delay for Password field
