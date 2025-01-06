@@ -48,7 +48,9 @@ INSTALLED_APPS = [
     'stripe',
     'User',
     'Cart',
-    'Payment_service'
+    'Payment_service',
+    'drf_yasg',
+
 ]
 
 MIDDLEWARE = [

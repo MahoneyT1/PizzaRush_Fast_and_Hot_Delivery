@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 import uuid
 from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import JSONParser
 
 from .serializers import UserSerializer
 from .models import User
@@ -27,10 +28,10 @@ class UserListView(APIView):
     # permission_classes = [IsAuthenticated]
 
     permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get(self, request):
-        """Sends a friend request to get the list of users in the system"""
+        """Sends a request to get the list of users in the system"""
         # pylint: disable=unused-argument
 
         users = User.objects.all()
@@ -43,7 +44,6 @@ class UserListView(APIView):
         """Sends a post request and acccepts data for pesistence
         deserializes json to python dict
         """
-
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
