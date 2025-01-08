@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
@@ -7,14 +7,17 @@ import toast, { Toaster } from "react-hot-toast";
 import * as Yup from "yup";
 import { MdErrorOutline } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode'; 
+import { UserContext } from "../UserContext";
 
 const Login = () => {
+
+  const {setUser} = useContext(UserContext)
 
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const [errorM, setErrorM] = useState({});
+  const [errorM, setErrorM] = useState(null);
 
   const initialValues = {
     username : "",
@@ -26,7 +29,7 @@ const Login = () => {
   const decodeToken = (token) => {
     try {
       const decoded = jwtDecode(token);
-      console.log('Decoded Token:', decoded);
+      // console.log('Decoded Token:', decoded);
       return decoded;
     } catch (err) {
       console.error('Invalid token', err);
@@ -46,12 +49,11 @@ const Login = () => {
 
         // Decode the access token
         const userInfo = decodeToken(access);
-        console.log('User Info from Token:', userInfo);
         const id = userInfo.user_id
 
         // Store tokens
-        localStorage.setItem('accessToken', access);
-        localStorage.setItem('refreshToken', refresh);
+        localStorage.setItem('access_token', access);
+        localStorage.setItem('refresh_token', refresh);
         
         const userResponse = await axios.get(`http://localhost:8000/users/${id}`, {
           headers: {
@@ -59,15 +61,16 @@ const Login = () => {
           },
         });
 
+        setErrorM({})
+        setUser(userResponse.data)
+        navigate('/')
 
-        console.log('User Info:', userResponse.data);
-        alert('Login successful!');
+
+        // alert('Login successful!');
 
 
 
         // resetForm({ values: ""})
-        // setErrorM({})
-        // navigate('/')
         // return toast.success("Account Created successfully, You can now login.")
         // console.log("all fine")
         
@@ -76,16 +79,8 @@ const Login = () => {
           const errors = error.response.data;
           setErrorM(errors)
           console.log(errors)
-          // Loop through the errors and display each in a toast
-          // for (const key in errors) {
-          //   let message = errors[key][0]; 
-          //   if (key === "email") {
-          //     message = "Email already taken.";
-          //   } else if (key === "username") {
-          //     message = "Username already taken.";
-          //   }
-          //   toast.error(`${message}`);
-          // }
+          toast.error("Invalid Username or Password");
+          
         }
 
           
@@ -145,7 +140,7 @@ const Login = () => {
             className="col-md-6 p-0 reg-image"
             variants={slideInLeft}
           >
-            <img src="../images/pi9.jpg" alt="Login" />
+            <img src="../images/pi9.jpg" loading="lazy"  alt="Login" />
           </motion.div>
 
           {/* Form Section */}
@@ -184,6 +179,7 @@ const Login = () => {
                   placeholder="Email"
                   value={formData.values.email}
                   onBlur={formData.handleBlur}
+                  className={errorM ? "input-error" : ""}
                   onChange={formData.handleChange}
                   variants={fadeUp(0.7)} // Delay for Email field
                 />
@@ -202,10 +198,11 @@ const Login = () => {
                   type="password"
                   name="password"
                   placeholder="Password"
+                  className={errorM ? "input-error" : ""}
                   value={formData.values.password}
                   onBlur={formData.handleBlur}
                   onChange={formData.handleChange}
-                  variants={fadeUp(0.8)} // Delay for Password field
+                  variants={fadeUp(0.8)} 
                 />
 
                     {
@@ -220,7 +217,7 @@ const Login = () => {
               {/* Buttons with sequential fade-up */}
               <motion.button
                 className="mt-2 main-btn button2 text-white"
-                variants={fadeUp(0.9)} // Delay for Login button
+                variants={fadeUp(0.9)}
                 type="submit"
               >
                 Login

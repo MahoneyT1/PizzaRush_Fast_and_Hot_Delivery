@@ -1,11 +1,10 @@
 import "./App.css";
-import "../node_modules/bootstrap/dist/css/bootstrap.css";
-import "../node_modules/bootstrap/dist/js/bootstrap.js";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.js";
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
+  BrowserRouter as Router,
+  Routes,
   Route,
-  RouterProvider,
 } from "react-router-dom";
 import SharedLayout from "./components/SharedLayout.jsx";
 import Home from "./pages/Home.jsx";
@@ -15,10 +14,10 @@ import Contact from "./pages/Contact.jsx";
 import About from "./pages/About.jsx";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Signup from "./pages/Signup.jsx"
+import Signup from "./pages/Signup.jsx";
 import MenuPage from "./pages/MenuPage.jsx";
 import MapLocator from "./pages/Map.jsx";
-import YourPizza from "./pages/YourPizza.jsx"
+import YourPizza from "./pages/YourPizza.jsx";
 import Base from "./pages/Base.jsx";
 import Toppings from "./pages/Toppings.jsx";
 import { useEffect, useState } from "react";
@@ -30,158 +29,96 @@ import PizzaManagement from "./pages/Admin/PizzaManagement.jsx";
 import AdminLayout from "./components/AdminLayout.jsx";
 import Reports from "./pages/Admin/Reports.jsx";
 import User from "./pages/User.jsx";
+import { UserProvider } from "./UserContext"; 
+import ScrollToTop from "./ScrollToTop.js";
+import PriveteRoute from './PrivateRoutes'
+import PrivateRoute from "./PrivateRoutes";
 
 function App() {
+    const [productsInCart, setProducts] = useState(
+        JSON.parse(localStorage.getItem("shopping-cart")) || []
+    );
 
+    useEffect(() => {
+        localStorage.setItem("shopping-cart", JSON.stringify(productsInCart));
+    }, [productsInCart]);
 
-  const [productsInCart, setProducts] =useState(
-		JSON.parse(
-			localStorage.getItem(
-				"shopping-cart"
-			)
-		) || []
-	);
+    const addProductToCart = (product) => {
+        setProducts((prevProducts) => {
+            const existingProduct = prevProducts.find((item) => item.id === product.id);
 
-  const prodLength = productsInCart.length
+            if (existingProduct) {
+                return prevProducts.map((item) =>
+                    item.id === product.id ? { ...item, count: item.count + 1 } : item
+                );
+            } else {
+                return [...prevProducts, { ...product, count: 1 }];
+            }
+        });
+    };
 
-  // console.log(prodLength)
-  // console.log(productsInCart)
-
-  useEffect(() => {
-		localStorage.setItem(
-			"shopping-cart",
-			JSON.stringify(productsInCart)
-		);
-	}, [productsInCart]);
-
-
-  const addProductToCart = (product) => {
-    console.log("clicked");
-    setProducts((prevProducts) => {
-        const existingProduct = prevProducts.find(
-            (item) => item.id === product.id
+    const onProductRemove = (product) => {
+        setProducts((oldState) => 
+            oldState.filter((item) => item.id !== product.id)
         );
+    };
 
-        if (existingProduct) {
-            return prevProducts.map((item) =>
-                item.id === product.id
-                    ? { ...item, count: item.count + 1 }
-                    : item
-            );
-        } else {
-            return [...prevProducts, { ...product, count: 1 }];
-        }
-    });
-};
+    const onQuantityChange = (productId, count) => {
+        setProducts((oldState) => {
+            const productsIndex = oldState.findIndex((item) => item.id === productId);
+            if (productsIndex !== -1) {
+                oldState[productsIndex].count = count;
+            }
+            return [...oldState];
+        });
+    };
 
+    return (
+        <UserProvider>
+            <Router>
+                <ScrollToTop />
+                <Routes>
+                    <Route path="/" element={<SharedLayout addProductToCart={addProductToCart} prodLength={productsInCart.length} />}>
+                        <Route index element={<Home addProductToCart={addProductToCart} prodLength={productsInCart.length} />} />
+                        <Route path="signup" element={<Signup />} />
+                        <Route path="login" element={<Login />} />
+                        <Route path="contact" element={<Contact />} />
+                        <Route path="about" element={<About />} />
+                        <Route path="menu" element={<MenuPage addProductToCart={addProductToCart} />} />
+                        <Route path="map" element={<MapLocator />} />
+                        <Route path="pizza" element={<YourPizza />} />
+                        <Route path="base" element={<Base />} />
+                        <Route path="toppings" element={<Toppings />} />
+                        <Route path="cart" element={
+                            <Cart
+                                productsInCart={productsInCart}
+                                onProductRemove={onProductRemove}
+                                prodLength={productsInCart.length}
+                                onQuantityChange={onQuantityChange}
+                            />
+                        } />
 
+                        <Route element={<PriveteRoute />}>
+                          <Route path="profile" element={<User />} />
+                        </Route>
 
-  const onProductRemove = (product) => {
-		setProducts((oldState) => {
-			const productsIndex =
-				oldState.findIndex(
-					(item) =>
-						item.id === product.id
-				);
-			if (productsIndex !== -1) {
-				oldState.splice(productsIndex, 1);
-			}
-			return [...oldState];
-		});
-	};
-
-
-  const onQuantityChange = (productId,count) => {
-		setProducts((oldState) => {
-			const productsIndex =oldState.findIndex((item) =>item.id === productId);
-			if (productsIndex !== -1) {
-				oldState[productsIndex].count =
-					count;
-			}
-			return [...oldState];
-		});
-	};
-
-
-
-
-
-  const main = createBrowserRouter(
-    createRoutesFromElements(
-      <Route path="/" element={<SharedLayout addProductToCart={addProductToCart} prodLength={prodLength} />}>
-        <Route
-          index
-          element={
-            <Home 
-              addProductToCart={addProductToCart}
-              prodLength={prodLength}
-            />
-          }
-        />
-
-        <Route path="signup" element={<Signup />} />
-        
-        <Route path="login" element={<Login />} />
-
-        <Route path="*" element={<ErrorPage />} />
-
-        <Route path="contact" element={<Contact />} />
-
-        <Route path="profile" element={<User />} />
+                        <Route element={<PrivateRoute isAdminRoute={true} />}> 
+                          <Route path="admin" element={<AdminLayout />}>
+                              <Route index element={<AdminDashboard />} />
+                              <Route path="orders" element={<Orders />} />
+                              <Route path="users" element={<UserManagement />} />
+                              <Route path="shop" element={<PizzaManagement />} />
+                              <Route path="report" element={<Reports />} />
+                          </Route>
+                        </Route>
 
 
-        {/* <Route path="admin" element={<AdminDashboard />} /> */}
-
-        <Route path="about" element={<About />} />
-
-        <Route path="menu" element={<MenuPage addProductToCart={addProductToCart} />} />
-
-        <Route path="map" element={<MapLocator />} />
-
-        <Route path="pizza" element={<YourPizza />} />
-
-        <Route path="base" element={<Base />} />
-
-        <Route path="toppings" element={<Toppings />} />
-
-        <Route path="cart" element={<Cart    
-              productsInCart={productsInCart}
-              onProductRemove={onProductRemove}
-              prodLength={prodLength}
-              onQuantityChange={onQuantityChange}
-        />} />
-
-
-          
-       
-
-
-
-
-        <Route path="admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          {/* <Route path=":name" element={<ProductDetail />} /> */}
-
-              
-          <Route path="orders" element={<Orders />} />
-
-          <Route path="users" element={<UserManagement />} />
-
-          <Route path="shop" element={<PizzaManagement />} />
-
-          <Route path="report" element={<Reports />} />
-        </Route>
-
-       
-
-
-       
-          
-      </Route>
-    )
-  );
-
-  return <RouterProvider router={main} />;
+                        <Route path="*" element={<ErrorPage />} />
+                    </Route>
+                </Routes>
+            </Router>
+        </UserProvider>
+    );
 }
 
 export default App;

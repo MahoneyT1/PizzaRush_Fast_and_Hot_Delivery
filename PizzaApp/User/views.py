@@ -26,11 +26,11 @@ class UserListView(APIView):
 
     # permission_classes = [IsAuthenticated]
 
-    # permission_classes = [AllowAny]
+    # permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get(self, request):
-        """Sends a friend request to get the list of users in the system"""
+        """Sends a request to get the list of users in the system"""
         # pylint: disable=unused-argument
 
         users = User.objects.all()
@@ -47,7 +47,6 @@ class UserListView(APIView):
         """Sends a post request and acccepts data for pesistence
         deserializes json to python dict
         """
-        
 
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():

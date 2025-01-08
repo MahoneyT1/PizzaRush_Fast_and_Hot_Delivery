@@ -78,6 +78,7 @@ const HeroM = () => {
               src="../../Images/pi2.jpg"
               className="img-fluid intro-image"
               alt="hero_image"
+              loading="lazy" 
             />
           </motion.div>
         </div>

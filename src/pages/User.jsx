@@ -1,10 +1,52 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { SlCallOut } from "react-icons/sl";
 import { GoMail } from "react-icons/go";
 import { VscSend } from "react-icons/vsc";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { UserContext } from '../UserContext';
 
 const User = () => {
+
+    const {setUser} = useContext(UserContext)
+
+    const navigate = useNavigate()
+
+    const logout = async() => {
+        try {
+            const response = await axios.post('http://localhost:8000/api/logout/')
+            
+            
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            console.log("user logged out")
+            setUser(null)
+            navigate('/')
+    
+    
+            // alert('Login successful!');
+    
+    
+    
+            // resetForm({ values: ""})
+            // return toast.success("Account Created successfully, You can now login.")
+            // console.log("all fine")
+            
+          } catch (error) {
+            if (error.response && error.response.data) {
+              const errors = error.response.data;
+              console.log(errors)
+              
+            }
+    
+              
+            else {
+              console.error("Unknown error:", error);
+            }
+          }
+
+    }
+
   return (
     <div className='user py-4'>
         <div className="container">
@@ -16,6 +58,7 @@ const User = () => {
                         <li><Link className='nav-link text-muted' to="/shop">My Profile</Link></li>
                         <li><Link className='nav-link text-muted' to="/shop">Address Book</Link></li>
                         <li><Link className='nav-link text-muted' to="/shop">My Payment Options</Link></li>
+                        <li><Link className='nav-link text-muted' onClick={logout} >Logout</Link></li>
                     </ul>
 
                     <small className='fw-bold'>My Orders</small>

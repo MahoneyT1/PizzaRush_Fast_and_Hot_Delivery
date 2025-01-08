@@ -1,21 +1,21 @@
 """Serializer class that handles serializing user data
 """
-
 from .models import User
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.models import BaseUserManager
 
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializes user model into json format
     """
     orders = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    
+
     class Meta:
         model = User
         fields = '__all__'
-        extra_kwargs = {'password': {'write_only': True}}
+        # extra_kwargs = {'password': {'write_only': True}}
 
     # def validate_email(self, value):
     #     """Validates that the email exists
@@ -34,14 +34,14 @@ class UserSerializer(serializers.ModelSerializer):
     #         raise ValidationError('User already exists!')
     #     return value
 
-    # def create(self, validated_data):
-    #     """Create a user by validating the user password
-    #     """
-    #     password = validated_data.pop('password')
-    #     user = User(**validated_data)
-    #     user.set_password(password)
-    #     user.save()
-    #     return user
+    def create(self, validated_data):
+        """Create a user by validating the user password
+        """
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
     
     # def validate_password(self, value):
     #     """Validates password"""

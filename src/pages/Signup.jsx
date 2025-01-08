@@ -9,7 +9,6 @@ import { MdErrorOutline } from "react-icons/md";
 
 const Signup = () => {
 
-    // const navigate = useNavigate();
 
     
     const [loading, setLoading] = useState(false);
@@ -42,9 +41,8 @@ const Signup = () => {
           if (error.response && error.response.data) {
             const errors = error.response.data;
             setErrorM(errors)
-            // Loop through the errors and display each in a toast
             for (const key in errors) {
-              let message = errors[key][0]; // Assuming errors come in array format
+              let message = errors[key][0]; 
               if (key === "email") {
                 message = "Email already taken.";
               } else if (key === "username") {
@@ -82,8 +80,6 @@ const Signup = () => {
     
 
 
-
-  // Animation variants
   const slideInLeft = {
     hidden: { opacity: 0, x: -100 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } },
@@ -117,7 +113,7 @@ const Signup = () => {
             className="col-md-6 p-0 reg-image"
             variants={slideInLeft}
           >
-            <img src="../Images/pi12.jpg" alt="Signup" />
+            <img src="../Images/pi12.jpg" loading="lazy" alt="Signup" />
           </motion.div>
 
           {/* Form Section */}
@@ -137,12 +133,12 @@ const Signup = () => {
               <div>
                 <motion.h4
                   className="fw-bold"
-                  variants={fadeUp(0.5)} // Delay for heading
+                  variants={fadeUp(0.5)} 
                 >
                   Create an Account
                 </motion.h4>
                 <motion.small
-                  variants={fadeUp(0.6)} // Delay for small text
+                  variants={fadeUp(0.6)} 
                 >
                   Enter Your Details Below
                 </motion.small>
@@ -160,7 +156,7 @@ const Signup = () => {
                   onBlur={formData.handleBlur}
                   onChange={formData.handleChange}
                   className={errorM.username ? "input-error" : ""}
-                  variants={fadeUp(0.7)} // Delay for Username field
+                  variants={fadeUp(0.7)}
                 />
                     {
                       formData.touched.username &&  formData.errors.username ? <MdErrorOutline size="20" className='icon' color="red" /> : null
@@ -185,7 +181,7 @@ const Signup = () => {
                   onChange={formData.handleChange}
                   onBlur={formData.handleBlur}
                   className={errorM.email ? "input-error" : ""}
-                  variants={fadeUp(0.8)} // Delay for Email field
+                  variants={fadeUp(0.8)} 
                 />
                   {
                     formData.touched.email &&  formData.errors.email? <MdErrorOutline size="20" className='icon' color="red" /> : null
@@ -204,7 +200,7 @@ const Signup = () => {
                   onBlur={formData.handleBlur}
                   value={ formData.values.password}
                   onChange={formData.handleChange}
-                  variants={fadeUp(0.9)} // Delay for Password field
+                  variants={fadeUp(0.9)} 
                 />
                   {
                     formData.touched.password &&  formData.errors.password? <MdErrorOutline size="20" className='icon' color="red" /> : null
@@ -218,7 +214,7 @@ const Signup = () => {
               {/* Buttons with sequential fade-up */}
               <motion.button
                 className="mt-2 main-btn button text-white"
-                variants={fadeUp(1.0)} // Delay for Create Account button
+                variants={fadeUp(1.0)} 
                 type="submit"
               >
                 Create Account
@@ -226,7 +222,7 @@ const Signup = () => {
 
               <motion.button
                 className="main-btn text-white button2"
-                variants={fadeUp(1.1)} // Delay for Google Sign-up button
+                variants={fadeUp(1.1)}
               >
                 Sign up with Google
               </motion.button>

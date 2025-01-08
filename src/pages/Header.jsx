@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { LuPizza } from "react-icons/lu";
 import { AiOutlineShoppingCart } from "react-icons/ai"; 
 import { Link } from "react-router-dom";
 import { FiUser } from "react-icons/fi";
+import { UserContext } from "../UserContext";
+
 
 
 
 const Header = ({productsInCart,prodLength}) => {
+
+  const {user} = useContext(UserContext)
+
+  console.log(user)
 
   return (
     <header className="header">
@@ -40,22 +46,26 @@ const Header = ({productsInCart,prodLength}) => {
           </ul>
 
           <div className="col-md-auto d-flex justify-content-end align-items-center gap-3">
-            {/* <li>
-              <Link to="/menu" className="nav-link">Order Online</Link>
-              </li> */}
-            <li>
+            { 
+              user && user.is_superuser && <li>
               <Link to="/admin" className="nav-link ">Admin</Link>
-            </li>
-            <li>
+              </li>
+            }
+            
+            {
+              user ? <li>
+              <Link className='nav-link' to="/profile"><FiUser size={24} /></Link>
+            </li> : <li>
               <Link to="/signup" className="nav-link ">Sign Up</Link>
             </li>
+            }
+            
+            
             <li className="cart-container">
               <a href="/cart"><AiOutlineShoppingCart size={24} /></a>
               { prodLength > 0 && (<span className="product-count">{prodLength} </span>	)}
             </li>
-            <li>
-              <Link className='nav-link' to="/profile"><FiUser size={24} /></Link>
-            </li>
+            
           </div>
         </div>
       </div>

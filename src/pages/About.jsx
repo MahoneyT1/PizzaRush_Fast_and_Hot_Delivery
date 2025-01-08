@@ -82,7 +82,7 @@ const About = () => {
             viewport={{ once: true }}
             variants={slideInRight}
           >
-            <img src="../../Images/pizz.png" alt="Pizza" />
+            <img src="../../Images/pizz.png" loading="lazy"  alt="Pizza" />
           </motion.div>
         </div>
 
