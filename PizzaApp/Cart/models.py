@@ -21,6 +21,9 @@ class Cart(models.Model):
     def __str__(self):
         """Returns string representation of cart"""
         return f'{self.id}'
+    
+    def total_price(self):
+        return sum()
 
 
 class CartItem(models.Model):
