@@ -28,7 +28,9 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '4b7f-197-210-78-79.ngrok-free.app'
+]
 
 
 # Application definition
@@ -45,12 +47,11 @@ INSTALLED_APPS = [
     'pizza',
     'corsheaders',
     'order',
-    'stripe',
     'User',
     'Cart',
     'Payment_service',
     'drf_yasg',
-
+    'paypalrestsdk'
 ]
 
 MIDDLEWARE = [
@@ -176,7 +177,10 @@ CORS_ALLOWED_ORIGINS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# stripe payment settings
 
-# PAYSTACK_PUBLIC_KEY = config("PAYSTACK_PUBLIC_KEY")
-# PAYSTACK_SECRET_KEY = config("PAYSTACK_SECRET_KEY")
+PAYPAL_RECEIVER_EMAIL = config('PAYPAL_RECEIVER_EMAIL')
+PAYPAL_TEST = True
+PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
+PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
+
+PAYPAL_MODE = 'sandbox'

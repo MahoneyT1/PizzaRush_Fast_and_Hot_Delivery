@@ -1,94 +1,108 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from paypalrestsdk import Payment
 from django.conf import settings
-from paystackapi.transaction import Transaction
-from django.utils.text import slugify
+from .paypal_utils import paypalrestsdk
+from Cart.models import Cart, CartItem
+from rest_framework import status
 
 
-class InitializePaymentView(APIView):
-    """Initiate a paystack transaction"""
+class CreatePayment(APIView):
+    """Paypal view"""
 
     def post(self, request):
-        """Handles POST requests to initiate payment"""
+        """Checks out cart-item"""
+        cart = Cart.objects.get(user=request.user)
+        cart_item = CartItem.objects.filter(cart=cart)
 
-        data = request.data
+        if not cart_item:
+            return Response({
+                'details': 'Not Found'
+            }, status=404)
+    
+        items_list = []
+        total_price = 0
 
-        email = data.get('email')
-        amount = data.get('amount')
-
-        # Validate input
-        if not email or not amount:
-            return Response({"error": "Email and amount are required."},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            # Ensure amount is a valid positive integer
-            amount = int(amount)
-            if amount <= 0:
-                raise ValueError("Amount must be greater than 0.")
-        except ValueError:
-            return Response({"error": "Amount must be a valid positive integer."},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        # Generate a valid reference
-        sanitized_email = slugify(email.split('@')[0])  # Create a safe version of the email prefix
-        reference = f'Payment-{sanitized_email}-{amount}'
-
-        try:
-            response = Transaction.initialize(
-                reference=reference,
-                email=email,
-                amount=amount * 100  # Convert amount to kobo
+        for item in cart_item:
+            items_list.append(
+                {
+                    'name': item.pizza.name,
+                    'sku': str(item.pizza.id),
+                    'price': f'{ item.pizza.price }',
+                    'currency': 'USD',
+                    'quantity': item.quantity
+                }
             )
-            
-            if response['status']:
-                return Response(
-                    {
-                        "status": "Success",
-                        "authorization_url": response['data']['authorization_url'],
-                        "reference": response['data']['reference']
+            total_price += item.pizza.price * item.quantity
+
+        payment = Payment(
+            {
+                'intent': 'sale',
+                'payer': {
+                    'payment_method': 'paypal'
+                },
+                'redirect_urls': {
+                    'return_url': 'https://4b7f-197-210-78-79.ngrok-free.app/paypal/execute/',
+                    'cancel_url': 'https://4b7f-197-210-78-79.ngrok-free.app/api/paypal/cancel/'
+                },
+                'transactions': [{
+                    'amount': {
+                        'total': f'{total_price:.2f}',
+                        'currency': 'USD'
                     },
-                    status=status.HTTP_200_OK
-                )
-            else:
-                return Response(
-                    {"status": "failed", "message": response['message']},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-        except Exception as e:
-            return Response(
-                {"error": "An error occurred during transaction initialization.", "details": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+                    'description': 'Payment for item in the cart',
+                    'item_list': {
+                        'items': items_list
+                    }
+                }]
+            }
+        )
+
+        if payment.create():
+            approved_url = next(link['href'] for link in payment.links if link['rel'] == 'approval_url')
+            return Response({
+                'status': 'success',
+                'approval_url': approved_url,
+
+            }, status=200)
+
+        else:
+            return Response({
+                'status': 'error',
+                'error': payment.error
+            }, status=400)
 
 
-class VerifyPaymentView(APIView):
-    """Verify a paystack transaction"""
+class Execute_payment(APIView):
+    """Executes payment"""
 
     def get(self, request):
-        """Handles GET requests to verify payment"""
+        """gets the payment details from the payment system"""
+
+        payment_id = request.query_params.get('paymentId')
+        payer_id = request.query_params.get('PAYID')
+
+        if not payment_id or not payer_id:
+            return Response({
+                'status': 'error',
+                'message': 'Missing parameters'
+            }, status=status.HTTP_400_BAD_REQUEST)
         
-        reference = request.query_params.get("reference")
+        payment = Payment.find(payment_id)
 
-        if not reference:
-            return Response({"error": "Reference is required."}, status=status.HTTP_400_BAD_REQUEST)
+        if payment.state == 'approved':
 
-        try:
-            response = Transaction.verify(reference)
-
-            if response["status"] and response["data"]["status"] == "success":
-                return Response(
-                    {"status": "success", "data": response["data"]},
-                    status=status.HTTP_200_OK,
-                )
+            if payment.execute({'payer_id': payer_id}):
+                return Response({
+                    'status': 'success',
+                    'message': 'Payment executed successfully'
+                })
+            
             else:
-                return Response(
-                    {"status": "failed", "message": response.get("message", "Payment failed.")},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-        except Exception as e:
-            return Response(
-                {"error": "An error occurred during payment verification.", "details": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+                return Response({
+                    'status': 'error',
+                    'message': 'Payment execution failed'
+                }, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response({"status": "error", "message": "Payment not approved"}, status=status.HTTP_400_BAD_REQUEST)
+
