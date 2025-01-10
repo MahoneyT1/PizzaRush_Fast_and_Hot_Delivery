@@ -1,20 +1,72 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { LuPizza } from "react-icons/lu";
 import { AiOutlineShoppingCart } from "react-icons/ai"; 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiUser } from "react-icons/fi";
 import { UserContext } from "../UserContext";
+import axios from "axios";
+import Loading from "./Loading";
 
 
 
 
 const Header = ({productsInCart,prodLength}) => {
 
-  const {user} = useContext(UserContext)
+  const {user, setUser} = useContext(UserContext)
+  const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
+
+  const logout = async() => {
+    setLoading(true)
+    try {
+
+        const response = await axios.post('http://localhost:8000/api/logout/')
+        
+        
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        console.log("user logged out")
+        setUser(null)
+        navigate('/')
+        setLoading(false)
+        
+        
+        // alert('Login successful!');
+
+        
+        
+        // resetForm({ values: ""})
+        // return toast.success("Account Created successfully, You can now login.")
+        // console.log("all fine")
+        
+      } catch (error) {
+        if (error.response && error.response.data) {
+          const errors = error.response.data;
+          console.log(errors)
+          setLoading(false)
+          
+        }
+        
+        
+        else {
+          setLoading(false)
+          console.error("Unknown error:", error);
+        }
+      }
+
+}
 
   // console.log(user)
 
   return (
+    <>
+
+    {
+      loading && <Loading />
+    }
+    
+
     <header className="header">
       <div className="container p-0">
         <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-1 border-bottom">
@@ -69,7 +121,7 @@ const Header = ({productsInCart,prodLength}) => {
               </div>
               <div className="profile-info d-flex flex-column">
                 <Link className="nav-link" to='profile'>{user.username}</Link>
-                <Link >Logout</Link>
+                <Link  onClick={logout}>Logout</Link>
               </div>
             </li> : <li>
               <Link to="/signup" className="nav-link button2 text-white">Sign Up</Link>
@@ -83,6 +135,8 @@ const Header = ({productsInCart,prodLength}) => {
         </div>
       </div>
     </header>
+
+    </>
   );
 };
 

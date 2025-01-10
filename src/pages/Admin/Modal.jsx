@@ -7,7 +7,7 @@ import { MdErrorOutline } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { type } from "@testing-library/user-event/dist/type";
 
-const Modal = () => {
+const Modal = ({setModal}) => {
   const [loading, setLoading] = useState(false);
   const [errorM, setErrorM] = useState({});
 
@@ -50,7 +50,7 @@ const Modal = () => {
 
   return (
     <div>
-      <div className="p-modal d-flex align-items-center justify-content-center bg">
+      <motion.div initial="hidden" variants={fadeUp} className="p-modal d-flex align-items-center justify-content-center bg">
         <div className="pmodal-content">
           <motion.form
             action=""
@@ -183,6 +183,7 @@ const Modal = () => {
               className="mt-2 main-btn button2 text-white"
               variants={fadeUp(1.0)}
               type="submit"
+              onClick={()=>{setModal(false)}}
             >
               Create Pizza
             </motion.button>
@@ -190,7 +191,7 @@ const Modal = () => {
             
           </motion.form>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
