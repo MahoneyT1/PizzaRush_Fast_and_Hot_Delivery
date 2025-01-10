@@ -33,6 +33,10 @@ import { UserProvider } from "./UserContext";
 import ScrollToTop from "./ScrollToTop.js";
 import PriveteRoute from './PrivateRoutes'
 import PrivateRoute from "./PrivateRoutes";
+import axios from "axios";
+import Loading from "./pages/Loading.jsx";
+import { AnimatePresence } from "framer-motion";
+import Modal from "./pages/Admin/Modal.jsx";
 
 function App() {
     const [productsInCart, setProducts] = useState(
@@ -43,18 +47,80 @@ function App() {
         localStorage.setItem("shopping-cart", JSON.stringify(productsInCart));
     }, [productsInCart]);
 
-    const addProductToCart = (product) => {
-        setProducts((prevProducts) => {
-            const existingProduct = prevProducts.find((item) => item.id === product.id);
+    const token = localStorage.getItem("access_token");
 
-            if (existingProduct) {
-                return prevProducts.map((item) =>
-                    item.id === product.id ? { ...item, count: item.count + 1 } : item
-                );
-            } else {
-                return [...prevProducts, { ...product, count: 1 }];
+
+    
+
+    const addProductToCart = async(product) => {
+        // setProducts((prevProducts) => {
+        //     const existingProduct = prevProducts.find((item) => item.id === product.id);
+
+        //     if (existingProduct) {
+        //         return prevProducts.map((item) =>
+        //             item.id === product.id ? { ...item, count: item.count + 1 } : item
+        //         );
+        //     } else {
+        //         return [...prevProducts, { ...product, count: 1 }];
+        //     }
+        // });
+
+        console.log(product)
+
+
+        const createCart = async () => {
+            try {
+              const response = await axios.post(
+                "http://127.0.0.1:8000/cart/item/",
+                {}, // Empty body, as the user is inferred from the token
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+              console.log(response.data);
+              return response.data;
+            } catch (error) {
+              console.error(error);
             }
-        });
+        };
+    
+
+        try {
+            // const response = await axios.post('http://localhost:8000/cart/item/', product)
+            // console.log("Response:", response.data); 
+    
+    
+            
+            // const response = await axios.post(`http://localhost:8000/cart/item/`, product,{
+            //   headers: {
+            //     Authorization: `Bearer ${token}`,
+            //   },
+            // });
+    
+            // setErrorM({})
+            // setProducts(response.data) 
+            // console.log(response.data) 
+            // navigate('/')
+    
+    
+            
+          } catch (error) {
+            if (error.response && error.response.data) {
+              const errors = error.response.data;
+              
+              console.log(errors)
+              
+            }
+    
+              
+            else {
+              console.error("Unknown error:", error);
+            }
+          }
+
+        
     };
 
     const onProductRemove = (product) => {
@@ -73,8 +139,12 @@ function App() {
         });
     };
 
+
+     
+
     return (
         <UserProvider>
+          <AnimatePresence mode="wait">
             <Router>
                 <ScrollToTop />
                 <Routes>
@@ -82,6 +152,7 @@ function App() {
                         <Route index element={<Home addProductToCart={addProductToCart} prodLength={productsInCart.length} />} />
                         <Route path="signup" element={<Signup />} />
                         <Route path="login" element={<Login />} />
+                        <Route path="load" element={<Modal />} />
                         <Route path="contact" element={<Contact />} />
                         <Route path="about" element={<About />} />
                         <Route path="menu" element={<MenuPage addProductToCart={addProductToCart} />} />
@@ -117,8 +188,10 @@ function App() {
                     </Route>
                 </Routes>
             </Router>
+          </AnimatePresence>
         </UserProvider>
     );
 }
 
 export default App;
+

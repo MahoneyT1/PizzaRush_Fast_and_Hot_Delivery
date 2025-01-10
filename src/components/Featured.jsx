@@ -15,9 +15,11 @@ const Featured = () => {
   };
 
   return (
-    <div className="container2">
-      <div className="container">
-        <div className="grid my-4 py-4">
+    <div className="container2 my-3 py-md-3">
+      <h3 className="text-center fw-bold">Our Services</h3>
+      <p className="text-center">In a world of choices, we bring you the perfect blend of taste and quality.</p>
+      <div className="featured  mt-5">
+        <div className="grid my-5 py-4">
           <motion.div
             className="d-flex gap-2 flex-column align-items-center text-center justify-content-center"
             initial="hidden"

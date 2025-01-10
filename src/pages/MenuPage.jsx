@@ -1,11 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Data from "../data";
 import { Link } from "react-router-dom";
 import Headings from "../components/Headings";
 import { TbCurrencyNaira } from "react-icons/tb";
+import axios from "axios";
 
 const MenuPage = ({ addProductToCart }) => {
+  const [pizzas, setPizzas] = useState([])
+  const token = localStorage.getItem("access_token");
+
+
+
+
+  // Fetch pizzas with Authorization header
+  const fetchPizzas = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/pizzas/", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Add Bearer token here
+        },
+      });
+      // Save data to localStorage
+      localStorage.setItem("pizzas", JSON.stringify(response.data));
+      setPizzas(response.data); // Update state with the fetched data
+    } catch (error) {
+      console.error("Error fetching pizzas:", error);
+      alert("Failed to load pizzas. Please check your connection or login again.");
+    }
+  };
+
+  useEffect(() => {
+    const storedPizzas = localStorage.getItem("pizzas");
+    if (storedPizzas) {
+      setPizzas(JSON.parse(storedPizzas)); // Use stored data if it exists
+    } else {
+      fetchPizzas(); // Fetch data from API if no data in localStorage
+    }
+  }, []);
+
+
+
+
   // Animation Variants
   const imageVariants = {
     hidden: { opacity: 0 },
@@ -30,7 +66,9 @@ const MenuPage = ({ addProductToCart }) => {
         
 
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-          {Data.map((item) => (
+          
+            {pizzas.length > 0 ? (
+              pizzas.map((item) => (
             <div key={item.id} className="item mb-4">
               {/* =======PRODUCT IMAGE STARTS HERE======= */}
               <motion.div
@@ -40,7 +78,7 @@ const MenuPage = ({ addProductToCart }) => {
                 viewport={{ amount: 0.2 }}
                 variants={imageVariants}
               >
-                <img src={item.image} loading="lazy" alt="" />
+                <img src={`http://localhost:8000${item.image}`} loading="lazy" alt="" />
               </motion.div>
 
               {/* =======PRODUCT CONTENT STARTS HERE======= */}
@@ -55,7 +93,7 @@ const MenuPage = ({ addProductToCart }) => {
                   {item.name}
                 </Link>
                 <div className="price d-flex align-items-center my-2 gap-3">
-                  <small>{item.description}</small>
+                  <small>{item.ingredients}</small>
                 </div>
                 <button
                   onClick={() => addProductToCart(item)}
@@ -64,8 +102,10 @@ const MenuPage = ({ addProductToCart }) => {
                   Add To Cart <TbCurrencyNaira size={20} /> {item.price}
                 </button>
               </motion.div>
-            </div>
-          ))}
+            </div> ))
+          ) : (
+            <p>Loading pizzas...</p>
+          )}
         </div>
 
         <Headings heading={"Classic Pizza"} />

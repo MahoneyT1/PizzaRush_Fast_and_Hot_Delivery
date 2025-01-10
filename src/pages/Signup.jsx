@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import * as Yup from "yup";
 import { MdErrorOutline } from "react-icons/md";
+import Loading from "./Loading";
 
 const Signup = () => {
 
@@ -35,12 +36,14 @@ const Signup = () => {
           console.log("Response:", response.data);          
           resetForm({ values: ""})
           setErrorM({})
-          return toast.success("Account Created successfully, You can now login.")
+          setLoading(false)
+          return toast.success("Account Created successfully.")
           
         } catch (error) {
           if (error.response && error.response.data) {
             const errors = error.response.data;
             setErrorM(errors)
+            setLoading(false)
             for (const key in errors) {
               let message = errors[key][0]; 
               if (key === "email") {
@@ -55,6 +58,7 @@ const Signup = () => {
             
           else {
             console.error("Unknown error:", error);
+            setLoading(false)
           }
         }
 
@@ -100,6 +104,12 @@ const Signup = () => {
   });
 
   return (
+    <>
+    
+    {
+      loading && <Loading />
+    }
+
     <div className="user-reg py-5">
       <div className="container">
         <motion.div
@@ -236,6 +246,7 @@ const Signup = () => {
       </div>
       <Toaster />
     </div>
+    </>
   );
 };
 

@@ -17,6 +17,7 @@ class CartDetailView(APIView):
     def get(self, request):
         """Gets a cart by """
         cart = Cart.objects.filter(user=request.user)
+        print(request.data)
         if not cart:
             return Response({"detail": "Cart not found."}, status=status.HTTP_404_NOT_FOUND)
 

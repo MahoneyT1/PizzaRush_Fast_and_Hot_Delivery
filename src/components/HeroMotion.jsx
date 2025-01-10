@@ -1,27 +1,70 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const HeroM = () => {
-  // Variants for the parent container
+  const images = [
+    "../../Images/pi2.jpg",
+    "../../Images/pi3.jpg",
+    "../../Images/p4.png",
+    "../../Images/p8.png",
+    "../../Images/p10.png",
+  ];
+
+  // Define different animations for each image
+  const imageAnimations = [
+    {
+      hidden: { opacity: 0, x: 100 },
+      visible: { opacity: 1, x: 0 },
+      exit: { opacity: 0, x: -100 },
+    },
+    {
+      hidden: { opacity: 0, y: -100 },
+      visible: { opacity: 1, y: 0 },
+      exit: { opacity: 0, y: 100 },
+    },
+    {
+      hidden: { opacity: 0, scale: 0.5 },
+      visible: { opacity: 1, scale: 1 },
+      exit: { opacity: 0, scale: 0.5 },
+    },
+    {
+      hidden: { opacity: 0, rotate: -45 },
+      visible: { opacity: 1, rotate: 0 },
+      exit: { opacity: 0, rotate: 45 },
+    },
+    {
+      hidden: { opacity: 0, y: 100 },
+      visible: { opacity: 1, y: 0 },
+      exit: { opacity: 0, y: -100 },
+    },
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Change image every 7 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 7000);
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, [images.length]);
+
+  // Variants for text animation
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.4, // Delay between child animations
+        staggerChildren: 0.5, // Delay between children animations
+        delayChildren: 0.5, // Initial delay before animations start
       },
     },
   };
 
-  // Variants for individual text elements
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
-  };
-
-  const imageVariants = {
-    hidden: { opacity: 0, x: 100 }, // Start off-screen to the right
-    visible: { opacity: 1, x: 0 }, // Slide into view
   };
 
   return (
@@ -59,7 +102,7 @@ const HeroM = () => {
               transition={{ duration: 1 }}
             >
               <button className="d-inline-block text-white button">
-                Order Now 
+                Order Now
               </button>
               <button className="d-inline-block text-white button2">
                 See Menu
@@ -67,20 +110,22 @@ const HeroM = () => {
             </motion.div>
           </motion.div>
 
-          <motion.div
-            className="col-lg-6 d-flex justify-content-end"
-            initial="hidden"
-            animate="visible"
-            variants={imageVariants}
-            transition={{ duration: 1.4 }}
-          >
-            <motion.img
-              src="../../Images/pi2.jpg"
-              className="img-fluid intro-image"
-              alt="hero_image"
-              loading="lazy" 
-            />
-          </motion.div>
+          {/* Image Section */}
+          <div className="col-lg-6 d-flex hero-image justify-content-end">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentImageIndex} 
+                src={images[currentImageIndex]}
+                className="img-fluid intro-image"
+                alt={`Pizza ${currentImageIndex + 1}`}
+                variants={imageAnimations[currentImageIndex]}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                transition={{ duration: 1 }}
+              />
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </section>

@@ -37,15 +37,93 @@ img{
 
 
 .header{
-  position: sticky;
+  /* position: sticky; */
   top: 0;
   background-color: #ffffff;
-  z-index: 9999;
+  /* z-index: 9999; */
 }
 
 .colorr{
   color: #D96940;
 }
+
+.profile-image{
+  width: 3rem;
+  height: 3rem ;
+  border-radius: 50%;
+}
+
+
+/* General styling */
+.header {
+  position: relative;
+}
+
+.hamburger-menu {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.cart-container {
+  position: relative;
+}
+
+.product-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+}
+
+/* Mobile menu styling */
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mobile-menu li {
+  list-style: none;
+}
+
+.mobile-menu .nav-link {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 0.5rem 0;
+  transition: color 0.3s;
+}
+
+.mobile-menu .nav-link:hover {
+  color: #ff4500; /* Highlight color on hover */
+}
+
+/* Hide mobile menu on larger screens */
+@media (min-width: 992px) {
+  .mobile-menu {
+    display: none;
+  }
+
+  .hamburger-menu {
+    display: none;
+  }
+}
+
+
 
 .container2{
   width: 70%;
@@ -106,6 +184,13 @@ small{
   font-weight: 700;
 }
 
+.hero-image{
+  height: 500px;
+  padding: 1rem;
+  /* background: #000; */
+}
+
+
 button,
 a.button2{
   font-size: 13px !important;
@@ -115,6 +200,7 @@ a.button2{
   border: none;
   outline: none;
 }
+
 
 
 
@@ -321,7 +407,7 @@ width: 100%;
 
 /* ABOUT SECTION STYLE */
 .grid{
-  display: grid;
+  display: grid !important;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.7rem;
 }
@@ -655,7 +741,150 @@ th, td{
 }
 
 
+/* LOADING CSS */
+/* Absolute Center Spinner */
+.loading {
+  position: fixed;
+  z-index: 9999;
+  height: 2em;
+  width: 2em;
+  overflow: visible;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
 
+/* Transparent Overlay */
+.loading:before , .p-modal{
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+}
+
+
+
+
+
+
+
+
+
+.loader  {
+  animation: rotate 1s infinite;  
+  height: 50px;
+  width: 50px;
+}
+
+
+
+.loader:before,
+.loader:after {   
+  border-radius: 50%;
+  content: '';
+  display: block;
+  height: 20px;  
+  width: 20px;
+}
+.loader:before {
+  animation: ball1 1s infinite;  
+  background-color: #cb2025;
+  box-shadow: 30px 0 0 #f8b334;
+  margin-bottom: 10px;
+}
+.loader:after {
+  animation: ball2 1s infinite; 
+  background-color: #00a096;
+  box-shadow: 30px 0 0 #97bf0d;
+}
+
+
+
+@keyframes rotate {
+  0% { 
+    -webkit-transform: rotate(0deg) scale(0.8); 
+    -moz-transform: rotate(0deg) scale(0.8);
+  }
+  50% { 
+    -webkit-transform: rotate(360deg) scale(1.2); 
+    -moz-transform: rotate(360deg) scale(1.2);
+  }
+  100% { 
+    -webkit-transform: rotate(720deg) scale(0.8); 
+    -moz-transform: rotate(720deg) scale(0.8);
+  }
+}
+
+@keyframes ball1 {
+  0% {
+    box-shadow: 30px 0 0 #f8b334;
+  }
+  50% {
+    box-shadow: 0 0 0 #f8b334;
+    margin-bottom: 0;
+    -webkit-transform: translate(15px,15px);
+    -moz-transform: translate(15px, 15px);
+  }
+  100% {
+    box-shadow: 30px 0 0 #f8b334;
+    margin-bottom: 10px;
+  }
+}
+
+@keyframes ball2 {
+  0% {
+    box-shadow: 30px 0 0 #97bf0d;
+  }
+  50% {
+    box-shadow: 0 0 0 #97bf0d;
+    margin-top: -20px;
+    -webkit-transform: translate(15px,15px);
+    -moz-transform: translate(15px, 15px);
+  }
+  100% {
+    box-shadow: 30px 0 0 #97bf0d;
+    margin-top: 0;
+  }
+}
+
+/* MODAL STYLES */
+
+
+.pmodal-content{
+  width: 400px;
+  max-width: 100%;
+  min-height: 400px;
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.pmodal-content form{
+  width: 100%;
+}
+
+.pmodal-content .input-field{
+  width: 100%;
+}
+
+.input-field select{
+  width: 100%;
+  padding: 10px;
+  background-color: #F2F2FD;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+}
+
+.pmodal-content .input-field input {
+  width: 100%;
+}
 
 
 .dashboard {
@@ -893,6 +1122,12 @@ button:hover {
 
   .hero{
     min-height: fit-content;
+  }
+
+  .hero-image{
+    height: 450px;
+    /* padding: 1rem; */
+    /* background: #000; */
   }
   
   .container2,

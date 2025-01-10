@@ -12,7 +12,7 @@ const Header = ({productsInCart,prodLength}) => {
 
   const {user} = useContext(UserContext)
 
-  console.log(user)
+  // console.log(user)
 
   return (
     <header className="header">
@@ -48,23 +48,36 @@ const Header = ({productsInCart,prodLength}) => {
           <div className="col-md-auto d-flex justify-content-end align-items-center gap-3">
             { 
               user && user.is_superuser && <li>
-              <Link to="/admin" className="nav-link ">Admin</Link>
+              <Link to="/admin" className="nav-link button2 text-white">Admin</Link>
               </li>
             }
+
+
+
+            <li className="cart-container">
+              <Link to="/cart" className="nav-link  "><AiOutlineShoppingCart size={24} /></Link> 
+              { prodLength > 0 && (<span className="product-count">{prodLength} </span>	)}
+            </li>
+
             
+
+
             {
-              user ? <li>
-              <Link className='nav-link' to="/profile"><FiUser size={24} /></Link>
+              user ? <li className="d-flex align-items-center gap-2">
+              <div className="profile-image">
+                <img src="../../Images/avatar-shanai.png" alt="" />
+              </div>
+              <div className="profile-info d-flex flex-column">
+                <Link className="nav-link" to='profile'>{user.username}</Link>
+                <Link >Logout</Link>
+              </div>
             </li> : <li>
-              <Link to="/signup" className="nav-link ">Sign Up</Link>
+              <Link to="/signup" className="nav-link button2 text-white">Sign Up</Link>
             </li>
             }
             
             
-            <li className="cart-container">
-              <a href="/cart"><AiOutlineShoppingCart size={24} /></a>
-              { prodLength > 0 && (<span className="product-count">{prodLength} </span>	)}
-            </li>
+           
             
           </div>
         </div>
@@ -74,3 +87,6 @@ const Header = ({productsInCart,prodLength}) => {
 };
 
 export default Header;
+
+
+

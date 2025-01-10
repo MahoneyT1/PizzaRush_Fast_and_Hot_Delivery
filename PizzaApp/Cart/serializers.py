@@ -13,7 +13,7 @@ class CartItemSerializer(serializers.ModelSerializer):
     class Meta:
         """fields to populate"""
         model = CartItem
-        fields = ['id', 'pizza', 'quantity', 'total_price']
+        fields = '__all__'
 
 
 class CartSerializer(serializers.ModelSerializer):

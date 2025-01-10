@@ -9,7 +9,7 @@ from .models import Pizza
 @admin.register(Pizza)
 class PizzaAdmin(admin.ModelAdmin):
     """PizzaAdmin Representation"""
-    list_display = ['id', 'name', 'description_type', 'ingredients', 'display_image']
+    list_display = ['id', 'name', 'price', 'description_type', 'ingredients', 'display_image']
 
     def display_image(self, obj):
         """Methods that fetches the image from the url

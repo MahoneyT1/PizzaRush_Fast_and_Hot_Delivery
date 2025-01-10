@@ -12,6 +12,6 @@ class PizzaSerializer(serializers.ModelSerializer): # pylint: disable=too-few-pu
     class Meta: # pylint: disable=too-few-public-methods
         """Database schema"""
         model = Pizza
-        fields = ['id', 'name', 'description_type', 'ingredients', 'image']
+        fields = '__all__'
         ordering = ['name']
         
