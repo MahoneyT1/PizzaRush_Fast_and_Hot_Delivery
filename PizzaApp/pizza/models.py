@@ -24,7 +24,7 @@ class Pizza(models.Model):
     description_type = models.CharField(max_length=30, choices=TYPE,
                               default='Picked-up', null=True, blank=False)
     ingredients = models.CharField(max_length=200, blank=False, null=False)
-    # price = models.FloatField(max_length=10, default=0, null=False, blank=False)
+    quantity = models.IntegerField(default=1, blank=False, null=False)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, blank=False, null=False)
     image = models.ImageField(upload_to='pizza/images/', blank=True, null=True)
 
