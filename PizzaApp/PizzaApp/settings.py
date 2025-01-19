@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'Cart',
     'Payment_service',
     'drf_yasg',
-    'paypalrestsdk'
+    'paypalrestsdk',
+    'Authentication'
 ]
 
 MIDDLEWARE = [
@@ -72,6 +73,12 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  # Allow all by default
+    ],
     'EXCEPTION_HANDLER': 'PizzaApp.utils.custom_exception_handler'
 }
 

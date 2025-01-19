@@ -24,9 +24,6 @@ from order.models import Order
 class UserListView(APIView):
     """Lists users """
 
-    # permission_classes = [IsAuthenticated]
-
-    # permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get(self, request):

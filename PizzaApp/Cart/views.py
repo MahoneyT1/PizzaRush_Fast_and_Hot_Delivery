@@ -3,6 +3,8 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from User.serializers import UserSerializer
 
 # custom models
 from pizza.models import Pizza
@@ -12,12 +14,15 @@ from .serializers import CartItemSerializer, CartSerializer
 
 
 class CartDetailView(APIView):
-    """checks if cart already exists and then"""
+    """checks if cart for a specific user exists
+    lists the cart if it exists"""
+    
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         """Gets a cart by """
-        cart = Cart.objects.filter(user=request.user)
-        print(request.data)
+        cart = Cart.objects.get(user=request.user.id)
+
         if not cart:
             return Response({"detail": "Cart not found."}, status=status.HTTP_404_NOT_FOUND)
 
@@ -45,11 +50,16 @@ class CartItemCreateView(APIView):
         serializer.is_valid(raise_exception=True)
 
         cart_item, created = CartItem.objects.get_or_create(cart=cart, pizza=pizza)
+        quantity = serializer.validated_data.get('quantity', 1)
 
         if not created:
-            cart_item.quantity += 1
-            cart_item.save()
-            return cart_item
+            cart_item.quantity += quantity
+
+        else:
+            cart_item.quantity = serializer.validated_data.get('quantity', 1)
+        
+        cart_item.save()
+
         return cart_item
 
     def delete_item(self, request):
@@ -84,7 +94,7 @@ class CartItemCreateView(APIView):
 
 
 class CartItemListView(APIView):
-    """List all the cart of a particular user"""
+    """List all the cartItems of a particular cart"""
 
     def get(self, request):
         """Get request for list of items added to cart"""
