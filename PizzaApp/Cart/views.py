@@ -31,36 +31,36 @@ class CartDetailView(APIView):
 
 
 class CartItemCreateView(APIView):
-    """creates cart and add items to cart"""
+    """Creates a cart (if it doesn't exist) and adds items to it."""
 
     def post(self, request):
-        """Adds item to the cart or create it"""
-        cart_item = self.add_to_cart(request=request)
+        """Adds an item to the cart or creates the cart if it doesn't exist."""
+        user = request.user
+
+        # Retrieve or create the cart for the user
+        cart, created = Cart.objects.get_or_create(user=user)
+
+        # Extract pizza ID and quantity from the request data
+        pizza_id = request.data.get('pizza')
+        quantity = request.data.get('quantity', 1)
+
+        # Validate the pizza ID
+        pizza = get_object_or_404(Pizza, pk=pizza_id)
+
+        # Check if the cart item already exists
+        cart_item, item_created = CartItem.objects.get_or_create(
+            cart=cart,
+            pizza=pizza,
+            defaults={'quantity': quantity}
+        )
+
+        if not item_created:
+            # If the item already exists, update the quantity
+            cart_item.quantity += int(quantity)
+            cart_item.save()
+
         serializer = CartItemSerializer(cart_item)
-
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def add_to_cart(self, request):
-        """Add to cat helper function"""
-
-        cart, created = Cart.objects.get_or_create(user=request.user)
-        pizza = get_object_or_404(Pizza, pk=request.data.get('pizza'))
-
-        serializer = CartItemSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        cart_item, created = CartItem.objects.get_or_create(cart=cart, pizza=pizza)
-        quantity = serializer.validated_data.get('quantity', 1)
-
-        if not created:
-            cart_item.quantity += quantity
-
-        else:
-            cart_item.quantity = serializer.validated_data.get('quantity', 1)
-        
-        cart_item.save()
-
-        return cart_item
 
     def delete_item(self, request):
         """deletes an item from the cart"""
