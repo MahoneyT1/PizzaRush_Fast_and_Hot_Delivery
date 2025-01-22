@@ -4,8 +4,10 @@ import { Formik, Form, Field, ErrorMessage, useFormik } from "formik";
 import { motion } from "framer-motion";
 import { MdErrorOutline } from "react-icons/md";
 // import Loading from "./Loading";
-import { Link } from "react-router-dom";
-import { type } from "@testing-library/user-event/dist/type";
+// import { Link } from "react-router-dom";
+// import { type } from "@testing-library/user-event/dist/type";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Modal = ({setModal}) => {
   const [loading, setLoading] = useState(false);
@@ -20,16 +22,68 @@ const Modal = ({setModal}) => {
   };
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("Username is required"),
-    email: Yup.string()
-      .email("Invalid email format")
-      .required("Email is required"),
-    password: Yup.string()
-      .min(8, "Password must be at least 8 characters")
-      .required("Password is required"),
+    name: Yup.string().required("Name is required"),
+    price: Yup.string().required("Price is required"),
+    ingredients: Yup.string().required("Ingredients is required"),
+    type: Yup.string().required("Type is required"),
+    image: Yup.mixed()
+  .required("Image is required")
+  .test("fileSize", "File size is too large", (value) =>
+    value ? value.size <= 2 * 1024 * 1024 : true // Max 2MB
+  )
+  .test("fileType", "Unsupported file format", (value) =>
+    value
+      ? ["image/jpeg", "image/png", "image/gif"].includes(value.type)
+      : true
+  ),
+   
   });
 
-  const onSubmit = async (values, { resetForm }) => {};
+  const onSubmit = async(values, {resetForm}) => {
+    if(validationSchema){
+      setLoading(true)
+      const token = localStorage.getItem('access_token')
+      try {
+        const response = await axios.post('http://localhost:8000/pizzas/', values, {
+          headers : {
+            Authorization : `Bearer ${token}`
+          }
+        })
+        console.log("Response:", response.data);          
+        resetForm({ values: ""})
+        setErrorM({})
+        setLoading(false)
+        return toast.success("Pizza Added successfully.")
+        
+      } catch (error) {
+        if (error.response && error.response.data) {
+          const errors = error.response.data;
+          console.log(errors);
+          setErrorM(errors)
+          setLoading(false)
+         
+        }
+
+          
+        else {
+          console.error("Unknown error:", error);
+          setLoading(false)
+        }
+      }
+
+    }
+  }
+
+
+  
+  const formData = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema,
+  });
+  
+
+
 
   const fadeUp = (delay) => ({
     hidden: { opacity: 0, y: 20 },
@@ -39,13 +93,6 @@ const Modal = ({setModal}) => {
       transition: { duration: 0.6, ease: "easeOut", delay: delay },
     },
   });
-
-  const formData = useFormik({
-    initialValues,
-    onSubmit,
-    validationSchema,
-  });
-
   const type = ["Starters", "Classic", "Vegetarian", "Meat-Lover's"];
 
   return (
@@ -84,27 +131,27 @@ const Modal = ({setModal}) => {
               ) : null}
 
               {formData.touched.name && formData.errors.name ? (
-                <small className="error_m">{formData.errors.username}</small>
+                <small className="error_m">{formData.errors.name}</small>
               ) : null}
             </div>
 
             <div className="input-field">
               <motion.input
                 type="text"
-                placeholder="Ingedients"
-                name="ingedients"
-                value={formData.values.ingedients}
+                placeholder="Ingredients"
+                name="ingredients"
+                value={formData.values.ingredients}
                 onChange={formData.handleChange}
                 onBlur={formData.handleBlur}
                 className={errorM.email ? "input-error" : ""}
                 variants={fadeUp(0.8)}
               />
-              {formData.touched.ingedients && formData.errors.ingedients ? (
+              {formData.touched.ingredients && formData.errors.ingredients ? (
                 <MdErrorOutline size="20" className="icon" color="red" />
               ) : null}
 
-              {formData.touched.ingedients && formData.errors.ingedients ? (
-                <small className="error_m">{formData.errors.ingedients}</small>
+              {formData.touched.ingredients && formData.errors.ingredients ? (
+                <small className="error_m">{formData.errors.ingredients}</small>
               ) : null}
             </div>
 
@@ -116,6 +163,8 @@ const Modal = ({setModal}) => {
                 id="type"
                 onChange={formData.handleChange}
                 onBlur={formData.handleBlur}
+                
+                variants={fadeUp(0.9)}
               >
                 <option value="">Pizza Type</option>
                 {type.map((type, index) => (
@@ -124,12 +173,12 @@ const Modal = ({setModal}) => {
                   </option>
                 ))}
               </select>
-            {formData.touched.password && formData.errors.password ? (
+            {formData.touched.type && formData.errors.type ? (
                 <MdErrorOutline size="20" className="icon" color="red" />
             ) : null}
 
-            {formData.touched.password && formData.errors.password ? (
-                <small className="error_m">{formData.errors.password}</small>
+            {formData.touched.type && formData.errors.type ? (
+                <small className="error_m">{formData.errors.type}</small>
             ) : null}
             </div>
 
@@ -159,18 +208,19 @@ const Modal = ({setModal}) => {
               <motion.input
                 type="file"
                 accept="image/*"
-                // onBlur={formData.handleBlur}
-                // value={formData.values.price}
-                // onChange={formData.handleChange}
+                onChange={(event) => {
+                  formData.setFieldValue("image", event.currentTarget.files[0]);
+                }}
                 variants={fadeUp(0.9)}
+                name="image"
               />
-              {formData.touched.price && formData.errors.price ? (
+              {/* {formData.touched.image && formData.errors.image ? (
                 <MdErrorOutline size="20" className="icon" color="red" />
               ) : null}
 
-              {formData.touched.price && formData.errors.price ? (
-                <small className="error_m">{formData.errors.price}</small>
-              ) : null}
+              {formData.touched.image && formData.errors.image ? (
+                <small className="error_m">{formData.errors.image}</small>
+              ) : null} */}
             </div>
 
 
@@ -183,7 +233,7 @@ const Modal = ({setModal}) => {
               className="mt-2 main-btn button2 text-white"
               variants={fadeUp(1.0)}
               type="submit"
-              onClick={()=>{setModal(false)}}
+              // onClick={()=>{setModal(false)}}
             >
               Create Pizza
             </motion.button>

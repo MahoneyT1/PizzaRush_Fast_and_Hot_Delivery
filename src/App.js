@@ -1,11 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SharedLayout from "./components/SharedLayout.jsx";
 import Home from "./pages/Home.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
@@ -29,169 +25,171 @@ import PizzaManagement from "./pages/Admin/PizzaManagement.jsx";
 import AdminLayout from "./components/AdminLayout.jsx";
 import Reports from "./pages/Admin/Reports.jsx";
 import User from "./pages/User.jsx";
-import { UserProvider } from "./UserContext"; 
+import { UserProvider } from "./UserContext";
 import ScrollToTop from "./ScrollToTop.js";
-import PriveteRoute from './PrivateRoutes'
+import PriveteRoute from "./PrivateRoutes";
 import PrivateRoute from "./PrivateRoutes";
 import axios from "axios";
-import Loading from "./pages/Loading.jsx";
+// import Loading from "./pages/Loading.jsx";
 import { AnimatePresence } from "framer-motion";
 import Modal from "./pages/Admin/Modal.jsx";
 
 function App() {
-    const [productsInCart, setProducts] = useState(
-        JSON.parse(localStorage.getItem("shopping-cart")) || []
-    );
+  const [productsInCart, setProducts] = useState(
+    JSON.parse(localStorage.getItem("shopping-cart")) || []
+  );
 
-    useEffect(() => {
-        localStorage.setItem("shopping-cart", JSON.stringify(productsInCart));
-    }, [productsInCart]);
+
+  useEffect(() => {
+    localStorage.setItem("shopping-cart", JSON.stringify(productsInCart));
+  }, [productsInCart]);
+
+
+  const addProductToCart = async (product) => {
+
+    
+    setProducts((prevProducts) => {
+      const existingProduct = prevProducts.find(
+        (item) => item.id === product.id
+      );
+
+      if (existingProduct) {
+        return prevProducts.map((item) =>
+          item.id === product.id ? { ...item, count: item.count + 1 } : item
+        );
+      } else {
+        return [...prevProducts, { ...product, count: 1 }];
+      }
+    });
 
     const token = localStorage.getItem("access_token");
 
+    const { id, quantity } = product;
 
-    
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/cart/add/`,{ pizza: id, quantity },{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    const addProductToCart = async(product) => {
-        // setProducts((prevProducts) => {
-        //     const existingProduct = prevProducts.find((item) => item.id === product.id);
+      console.log(response.data);
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const errors = error.response.data;
 
-        //     if (existingProduct) {
-        //         return prevProducts.map((item) =>
-        //             item.id === product.id ? { ...item, count: item.count + 1 } : item
-        //         );
-        //     } else {
-        //         return [...prevProducts, { ...product, count: 1 }];
-        //     }
-        // });
+        console.log(errors);
+        console.log(error.response);
+      } else {
+        console.error("Unknown error:", error);
+      }
+    }
+  };
 
-        console.log(product)
-
-
-        const createCart = async () => {
-            try {
-              const response = await axios.post(
-                "http://127.0.0.1:8000/cart/item/",
-                {}, // Empty body, as the user is inferred from the token
-                {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                }
-              );
-              console.log(response.data);
-              return response.data;
-            } catch (error) {
-              console.error(error);
-            }
-        };
-    
-
-        try {
-            // const response = await axios.post('http://localhost:8000/cart/item/', product)
-            // console.log("Response:", response.data); 
-    
-    
-            
-            // const response = await axios.post(`http://localhost:8000/cart/item/`, product,{
-            //   headers: {
-            //     Authorization: `Bearer ${token}`,
-            //   },
-            // });
-    
-            // setErrorM({})
-            // setProducts(response.data) 
-            // console.log(response.data) 
-            // navigate('/')
-    
-    
-            
-          } catch (error) {
-            if (error.response && error.response.data) {
-              const errors = error.response.data;
-              
-              console.log(errors)
-              
-            }
-    
-              
-            else {
-              console.error("Unknown error:", error);
-            }
-          }
-
-        
-    };
-
-    const onProductRemove = (product) => {
-        setProducts((oldState) => 
-            oldState.filter((item) => item.id !== product.id)
-        );
-    };
-
-    const onQuantityChange = (productId, count) => {
-        setProducts((oldState) => {
-            const productsIndex = oldState.findIndex((item) => item.id === productId);
-            if (productsIndex !== -1) {
-                oldState[productsIndex].count = count;
-            }
-            return [...oldState];
-        });
-    };
-
-
-     
-
-    return (
-        <UserProvider>
-          <AnimatePresence mode="wait">
-            <Router>
-                <ScrollToTop />
-                <Routes>
-                    <Route path="/" element={<SharedLayout addProductToCart={addProductToCart} prodLength={productsInCart.length} />}>
-                        <Route index element={<Home addProductToCart={addProductToCart} prodLength={productsInCart.length} />} />
-                        <Route path="signup" element={<Signup />} />
-                        <Route path="login" element={<Login />} />
-                        <Route path="load" element={<Modal />} />
-                        <Route path="contact" element={<Contact />} />
-                        <Route path="about" element={<About />} />
-                        <Route path="menu" element={<MenuPage addProductToCart={addProductToCart} />} />
-                        <Route path="map" element={<MapLocator />} />
-                        <Route path="pizza" element={<YourPizza />} />
-                        <Route path="base" element={<Base />} />
-                        <Route path="toppings" element={<Toppings />} />
-                        <Route path="cart" element={
-                            <Cart
-                                productsInCart={productsInCart}
-                                onProductRemove={onProductRemove}
-                                prodLength={productsInCart.length}
-                                onQuantityChange={onQuantityChange}
-                            />
-                        } />
-
-                        <Route element={<PriveteRoute />}>
-                          <Route path="profile" element={<User />} />
-                        </Route>
-
-                        <Route element={<PrivateRoute isAdminRoute={true} />}> 
-                          <Route path="admin" element={<AdminLayout />}>
-                              <Route index element={<AdminDashboard />} />
-                              <Route path="orders" element={<Orders />} />
-                              <Route path="users" element={<UserManagement />} />
-                              <Route path="shop" element={<PizzaManagement />} />
-                              <Route path="report" element={<Reports />} />
-                          </Route>
-                        </Route>
-
-
-                        <Route path="*" element={<ErrorPage />} />
-                    </Route>
-                </Routes>
-            </Router>
-          </AnimatePresence>
-        </UserProvider>
+  const onProductRemove = async (product) => {
+    setProducts((oldState) =>
+      oldState.filter((item) => item.id !== product.id)
     );
+
+    // const { id } = product;
+
+    // try {
+    //   const response = await axios.post(`http://localhost:8000/cart/delete`, {
+    //     pizza: id,
+    //   });
+    //   console.log("Item deleted:", response.data);
+    //   return response.data;
+    // } catch (error) {
+    //   console.error(
+    //     "Error deleting item from cart:",
+    //     error.response ? error.response.data : error.message
+    //   );
+    //   throw error;
+    // }
+  };
+
+  const onQuantityChange = (productId, count) => {
+    setProducts((oldState) => {
+      const productsIndex = oldState.findIndex((item) => item.id === productId);
+      if (productsIndex !== -1) {
+        oldState[productsIndex].count = count;
+      }
+      return [...oldState];
+    });
+  };
+
+  return (
+    <UserProvider>
+      <AnimatePresence mode="wait">
+        <Router>
+          <ScrollToTop />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <SharedLayout
+                  addProductToCart={addProductToCart}
+                  prodLength={productsInCart.length}
+                />
+              }
+            >
+              <Route
+                index
+                element={
+                  <Home
+                    addProductToCart={addProductToCart}
+                    prodLength={productsInCart.length}
+                  />
+                }
+              />
+              <Route path="signup" element={<Signup />} />
+              <Route path="login" element={<Login />} />
+              <Route path="load" element={<Modal />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="about" element={<About />} />
+              <Route
+                path="menu"
+                element={<MenuPage addProductToCart={addProductToCart} />}
+              />
+              <Route path="map" element={<MapLocator />} />
+              <Route path="pizza" element={<YourPizza />} />
+              <Route path="base" element={<Base />} />
+              <Route path="toppings" element={<Toppings />} />
+              <Route
+                path="cart"
+                element={
+                  <Cart
+                    productsInCart={productsInCart}
+                    onProductRemove={onProductRemove}
+                    prodLength={productsInCart.length}
+                    onQuantityChange={onQuantityChange}
+                  />
+                }
+              />
+
+              <Route element={<PriveteRoute />}>
+                <Route path="profile" element={<User />} />
+              </Route>
+
+              <Route element={<PrivateRoute isAdminRoute={true} />}>
+                <Route path="admin" element={<AdminLayout />}>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="orders" element={<Orders />} />
+                  <Route path="users" element={<UserManagement />} />
+                  <Route path="shop" element={<PizzaManagement />} />
+                  <Route path="report" element={<Reports />} />
+                </Route>
+              </Route>
+
+              <Route path="*" element={<ErrorPage />} />
+            </Route>
+          </Routes>
+        </Router>
+      </AnimatePresence>
+    </UserProvider>
+  );
 }
 
 export default App;
-

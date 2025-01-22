@@ -1,14 +1,45 @@
 // MenuManagement.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import Modal from "./Modal";
+import axios from "axios";
 
 const PizzaManagement = () => {
-  const [menuItems, setMenuItems] = useState([
-    { id: 1, name: "Margherita", price: "$10" },
-    { id: 2, name: "Pepperoni", price: "$12" },
-    { id: 3, name: "Veggie Delight", price: "$11" },
-  ]);
+  const [menuItems, setMenuItems] = useState([ ]);
+
+  console.log(menuItems)
+
+
+
+  const pizzas = async() => {
+    
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/pizzas/`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+     setMenuItems(response.data);
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const errors = error.response.data;
+
+        console.log(errors);
+        console.log(error.response);
+      } else {
+        console.error("Unknown error:", error);
+      }
+    }
+  }
+
+  useEffect(() => {
+    pizzas();
+  }, []);
 
   const [modal, setModal] = useState(false);
   return (
@@ -44,7 +75,7 @@ const PizzaManagement = () => {
                     <tr key={item.id}>
                       <td>{item.name}</td>
                       <td>{item.price}</td>
-                      <td>{item.name}</td>
+                      <td>{item.description_type}</td>
                       <td>
                         <button>Edit</button>
                         <button>Delete</button>

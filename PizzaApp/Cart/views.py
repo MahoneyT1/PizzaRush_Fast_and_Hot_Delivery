@@ -62,7 +62,10 @@ class CartItemCreateView(APIView):
         serializer = CartItemSerializer(cart_item)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def delete_item(self, request):
+
+class DeleteCartItems(APIView):
+    
+    def post(self, request):
         """deletes an item from the cart"""
 
         cart = Cart.objects.filter(user=request.user)
