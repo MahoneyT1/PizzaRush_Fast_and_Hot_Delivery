@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { TbCurrencyNaira } from "react-icons/tb";
 import { RiDeleteBinLine } from "react-icons/ri";
+import axios from "axios";
+import Loading from "./Loading";
 
 const Cart = ({ productsInCart, onProductRemove, prodLength, onQuantityChange }) => {
   // Calculate subtotal for products
@@ -22,7 +24,37 @@ const Cart = ({ productsInCart, onProductRemove, prodLength, onQuantityChange })
     },
   });
 
+
+  const [loading, setLoading] = useState(false)
+
+  const goToPay = async () => {
+    setLoading(true)
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/create_payment/", {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}` // Include token for authentication
+        }
+      });
+      setLoading(false)
+      
+      if (response.data.status === "success") {
+        const approvalUrl = response.data.approval_url;
+        window.location.href = approvalUrl; // Redirect user to PayPal
+      } else {
+        console.error("Payment creation failed:", response.data);
+        alert("Payment creation failed. Please try again.");
+        setLoading(false)
+      }
+    } catch (error) {
+      setLoading(false)
+      console.error("Error during payment creation:", error);
+      alert("An error occurred. Please try again later.");
+    }
+  };
+  
   return (
+    <>
+    {loading && <Loading />}
     <div className="my-1 mb-4 cart">
       <div className="container">
         {/* Empty Cart Section */}
@@ -146,8 +178,8 @@ const Cart = ({ productsInCart, onProductRemove, prodLength, onQuantityChange })
                 </small>
               </div>
               <Link
-                to="/checkout"
                 className="nav-link text-white button2 rounded text-center main-btn"
+                onClick={goToPay}
               >
                 Proceed to checkout
               </Link>
@@ -156,6 +188,7 @@ const Cart = ({ productsInCart, onProductRemove, prodLength, onQuantityChange })
         )}
       </div>
     </div>
+    </>
   );
 };
 
