@@ -32,6 +32,7 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     @property
     def total_price(self):

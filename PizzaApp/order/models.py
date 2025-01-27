@@ -23,13 +23,22 @@ class Order(models.Model):
     ])
 
     id = models.UUIDField(default=generate_uuid, primary_key=True, blank=True, null=False)
-    name = models.CharField(max_length=100, blank=False, null=False)
-    description = models.CharField(max_length=200, null=False, blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name= 'orders', blank=True, null=True)
     status = models.CharField(max_length=30, choices=STATUS,
                               default='Picked-up', null=True, blank=False)
-    pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE, related_name='orders', blank=True, null=False)
+    reference = models.CharField(max_length=100, blank=True, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+    
 
     def __str__(self):
         """Representation of the Order in string"""
         return f'{self.id} {self.name}'
+    
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name="items", on_delete=models.CASCADE)
+    pizza = models.ForeignKey(Pizza, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)  

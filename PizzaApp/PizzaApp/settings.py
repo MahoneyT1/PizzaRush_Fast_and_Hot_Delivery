@@ -28,9 +28,10 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = [
-#     '4b7f-197-210-78-79.ngrok-free.app'
-# ]
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost'
+]
 
 
 # Application definition
@@ -179,9 +180,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-PAYPAL_RECEIVER_EMAIL = config('PAYPAL_RECEIVER_EMAIL')
-PAYPAL_TEST = True
-PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
-PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
-
-PAYPAL_MODE = 'sandbox'
+PAYSTACK_PUBLIC_KEY = config('PAYSTACK_PUBLIC_KEY')
+PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY')
