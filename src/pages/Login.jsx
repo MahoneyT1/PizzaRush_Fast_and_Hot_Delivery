@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
@@ -11,7 +11,7 @@ import { jwtDecode } from "jwt-decode";
 import { UserContext } from "../UserContext";
 import Loading from "./Loading";
 
-const Login = () => {
+const Login = ({setProducts, fetchCart}) => {
   const { setUser } = useContext(UserContext);
 
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const Login = () => {
           "http://localhost:8000/api/token/",
           values
         );
-        console.log("Response:", response.data);
+        // console.log("Response:", response.data);
 
         const { access, refresh } = response.data;
 
@@ -69,16 +69,20 @@ const Login = () => {
         setUser(userResponse.data);
         navigate("/");
 
+        fetchCart();
+        return toast.success("You're Now Logged In.")
+      
+        
+
         // alert('Login successful!');
 
         // resetForm({ values: ""})
-        // return toast.success("Account Created successfully, You can now login.")
         // console.log("all fine")
       } catch (error) {
         if (error.response && error.response.data) {
           const errors = error.response.data;
           setErrorM(errors);
-          console.log(errors);
+          // console.log(errors);
           toast.error("Invalid Username or Password");
           setLoading(false);
         } else {
@@ -89,7 +93,6 @@ const Login = () => {
   };
 
   const validationSchema = Yup.object().shape({
-    // email: Yup.string().required("Email is required").email("Invalid email format"),
     email: Yup.string().email("Invalid email format").required("Email is required"),
     password: Yup.string().required("Password is required"),
   });

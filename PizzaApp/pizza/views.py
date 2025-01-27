@@ -12,7 +12,7 @@ from .models import Pizza
 
 class PizzaListView(APIView):
     """Pizza view representation"""
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
 
     def get(self, request):
@@ -47,25 +47,42 @@ class PizzaDetailView(APIView): # pylint: disable=no-member
     """
     parser_classes = [MultiPartParser, FormParser]
 
+    # def get_object(self, pk):
+    #     """Gets Pizza object by id"""
+
+    #     obj = Pizza.objects.get(pk=pk) # pylint: disable=no-member
+    #     if obj:
+    #         return obj
+    #     return None
+
+    # def get(self, request, pk):
+    #     """Gets an Pizza by Id"""
+
+    #     # pylint: disable=unused-argument
+    #     pizza = self.get_object(pk=pk)
+
+    #     if pizza:
+    #         serializer = PizzaSerializer(Pizza)
+    #         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    #     return Response(status=status.HTTP_404_NOT_FOUND)
+
+
     def get_object(self, pk):
         """Gets Pizza object by id"""
-
-        obj = Pizza.objects.get(pk=pk) # pylint: disable=no-member
-        if obj:
-            return obj
-        return None
+        try:
+            return Pizza.objects.get(pk=pk)  # pylint: disable=no-member
+        except Pizza.DoesNotExist:
+            return None
 
     def get(self, request, pk):
-        """Gets an Pizza by Id"""
-
-        # pylint: disable=unused-argument
+        """Gets a Pizza by Id"""
         pizza = self.get_object(pk=pk)
-
         if pizza:
-            serializer = PizzaSerializer(Pizza)
+            serializer = PizzaSerializer(pizza)  # Corrected object reference
             return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"detail": "Pizza not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, pk):
         """Updates an Order instance"""

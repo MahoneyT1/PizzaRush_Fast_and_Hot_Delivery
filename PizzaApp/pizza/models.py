@@ -22,7 +22,7 @@ class Pizza(models.Model):
     id = models.UUIDField(default=generate_uuid, primary_key=True, blank=True, null=False)
     name = models.CharField(max_length=100, blank=False, null=False)
     description_type = models.CharField(max_length=30, choices=TYPE,
-                              default='Picked-up', null=True, blank=False)
+                              default='Starters', null=True, blank=False)
     ingredients = models.CharField(max_length=200, blank=False, null=False)
     quantity = models.IntegerField(default=1, blank=False, null=False)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, blank=False, null=False)

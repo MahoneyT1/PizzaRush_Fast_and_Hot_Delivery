@@ -58,13 +58,12 @@ class UserDetailView(APIView):
     """
     parser_classes = [MultiPartParser, FormParser, JSONParser]
 
+    
     def get_object(self, pk):
-        """Fetches obj by the id=pk"""
-        user = User.objects.get(pk=pk)
-
-        if user:
-            return user
-        raise Http404
+        try:
+            return User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
 
     def get(self, request, pk):
         """handles a get request to fetch data by Id"""
@@ -76,16 +75,20 @@ class UserDetailView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+
     def put(self, request, pk):
         """Handles Update request/PUT to modify object by Id"""
         user = self.get_object(pk=pk)
-        serializer = UserSerializer(user, data=request.data)
+        if not user:
+            return Response({"error": "User not found!"}, status=status.HTTP_404_NOT_FOUND)
 
+        serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
     def delete(self, request, pk):
         """Deletes a user"""

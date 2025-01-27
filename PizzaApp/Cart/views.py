@@ -63,37 +63,74 @@ class CartItemCreateView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class DeleteCartItems(APIView):
+# class DeleteCartItems(APIView):
     
+#     def post(self, request):
+#         """deletes an item from the cart"""
+
+#         cart = Cart.objects.filter(user=request.user)
+
+#         if not cart:
+#             return Response({"details": "Cart not found"},
+#                             status=status.HTTP_404_NOT_FOUND)
+
+#         pizza_id = request.data.get('pizza')
+
+#         if not pizza_id:
+#             return Response({"details": "Pizza not found"},
+#                             status=status.HTTP_404_NOT_FOUND)
+
+#         try:
+#             _ = Pizza.objects.get(pizza_id) # disable=no-member
+#         except Pizza.DoesNotExist:
+#             return Response({"details":"This pizza is out of stock."},
+#                             status=status.HTTP_404_NOT_FOUND)
+
+#         cart_item = CartItem.objects.filter(cart=cart, pizza=pizza_id).first()
+#         if not cart_item:
+#             return Response({"detail": "Item not found in cart."},
+#                             status=status.HTTP_404_NOT_FOUND)
+
+#         cart_item.delete()
+#         return Response({"details":"Item deleted from the cart."},
+#         status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+class DeleteCartItems(APIView):
     def post(self, request):
-        """deletes an item from the cart"""
-
-        cart = Cart.objects.filter(user=request.user)
-
-        if not cart:
-            return Response({"details": "Cart not found"},
+        """Deletes an item from the cart."""
+        try:
+            # Retrieve the cart for the user
+            cart = Cart.objects.get(user=request.user)
+        except Cart.DoesNotExist:
+            return Response({"details": "Cart not found."},
                             status=status.HTTP_404_NOT_FOUND)
 
         pizza_id = request.data.get('pizza')
 
         if not pizza_id:
-            return Response({"details": "Pizza not found"},
-                            status=status.HTTP_404_NOT_FOUND)
+            return Response({"details": "Pizza ID is required."},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            _ = Pizza.objects.get(pizza_id) # disable=no-member
+            # Validate the pizza ID
+            pizza = Pizza.objects.get(pk=pizza_id)
         except Pizza.DoesNotExist:
-            return Response({"details":"This pizza is out of stock."},
+            return Response({"details": "This pizza is out of stock."},
                             status=status.HTTP_404_NOT_FOUND)
 
-        cart_item = CartItem.objects.filter(cart=cart, pizza=pizza_id).first()
+        # Retrieve the cart item
+        cart_item = CartItem.objects.filter(cart=cart, pizza=pizza).first()
         if not cart_item:
             return Response({"detail": "Item not found in cart."},
                             status=status.HTTP_404_NOT_FOUND)
 
+        # Delete the cart item
         cart_item.delete()
-        return Response({"details":"Item deleted from the cart."},
-        status=status.HTTP_204_NO_CONTENT)
+        return Response({"details": "Item deleted from the cart."},
+                        status=status.HTTP_204_NO_CONTENT)
 
 
 class CartItemListView(APIView):

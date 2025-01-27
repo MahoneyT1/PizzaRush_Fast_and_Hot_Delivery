@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import Modal from "./Modal";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const PizzaManagement = () => {
   const [menuItems, setMenuItems] = useState([ ]);
+  const [isEditing, setIsEditing] = useState(false)
 
-  console.log(menuItems)
+ 
 
 
 
@@ -37,14 +39,43 @@ const PizzaManagement = () => {
     }
   }
 
+  const deletePizza = async (id) => {
+    
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/pizzas/${id}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      
+      return toast.success("Pizza deleted successfully.")
+      console.log("pizza deleted successfully")
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+
+
   useEffect(() => {
     pizzas();
   }, []);
 
+
+
+
+  const handleEdit = () => {
+    setModal(true);
+    setIsEditing(true)
+  }
+
   const [modal, setModal] = useState(false);
   return (
     <>
-      {modal && <Modal setModal={setModal} />}
+      {modal && <Modal setModal={setModal} setIsEditing={setIsEditing} isEditing={isEditing} />}
+      
 
       <div className="dashboard py-4">
         <div className="container">
@@ -77,8 +108,8 @@ const PizzaManagement = () => {
                       <td>{item.price}</td>
                       <td>{item.description_type}</td>
                       <td>
-                        <button>Edit</button>
-                        <button>Delete</button>
+                        <button onClick={handleEdit}>Edit</button>
+                        <button onClick={()=> deletePizza(item.id)}>Delete</button>
                       </td>
                     </tr>
                   ))}
@@ -88,6 +119,8 @@ const PizzaManagement = () => {
           </div>
         </div>
       </div>
+
+      <Toaster />
     </>
   );
 };

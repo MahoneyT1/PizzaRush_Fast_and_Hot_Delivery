@@ -7,25 +7,26 @@ import { MdErrorOutline } from "react-icons/md";
 // import { Link } from "react-router-dom";
 // import { type } from "@testing-library/user-event/dist/type";
 import axios from "axios";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import Loading from "../Loading";
 
-const Modal = ({setModal}) => {
+const Modal = ({setModal, setIsEditing, isEditing}) => {
   const [loading, setLoading] = useState(false);
   const [errorM, setErrorM] = useState({});
 
   const initialValues = {
     name: "",
-    type: "",
+    description_type: "",
     ingredients: "",
     price: "",
-    image: "",
+    image: null,
   };
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     price: Yup.string().required("Price is required"),
     ingredients: Yup.string().required("Ingredients is required"),
-    type: Yup.string().required("Type is required"),
+    description_type: Yup.string().required("Type is required"),
     image: Yup.mixed()
   .required("Image is required")
   .test("fileSize", "File size is too large", (value) =>
@@ -46,19 +47,22 @@ const Modal = ({setModal}) => {
       try {
         const response = await axios.post('http://localhost:8000/pizzas/', values, {
           headers : {
-            Authorization : `Bearer ${token}`
+            Authorization : `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          
           }
         })
-        console.log("Response:", response.data);          
+        // console.log("Response:", response.data);          
         resetForm({ values: ""})
         setErrorM({})
         setLoading(false)
+        setModal(false)
         return toast.success("Pizza Added successfully.")
         
       } catch (error) {
         if (error.response && error.response.data) {
           const errors = error.response.data;
-          console.log(errors);
+          // console.log(errors);
           setErrorM(errors)
           setLoading(false)
          
@@ -96,6 +100,12 @@ const Modal = ({setModal}) => {
   const type = ["Starters", "Classic", "Vegetarian", "Meat-Lover's"];
 
   return (
+    <>
+    
+    {
+      loading && <Loading />
+    }
+    
     <div>
       <motion.div initial="hidden" variants={fadeUp} className="p-modal d-flex align-items-center justify-content-center bg">
         <div className="pmodal-content">
@@ -110,8 +120,12 @@ const Modal = ({setModal}) => {
           >
             <div>
               <motion.h4 className="fw-bold text-center" variants={fadeUp(0.5)}>
-                Add Pizza
+                {
+                  isEditing ? "Edit Pizza" : "Add Pizza"
+                }
+                
               </motion.h4>
+
             </div>
 
             {/* Input fields with sequential fade-up */}
@@ -159,7 +173,7 @@ const Modal = ({setModal}) => {
 
             <div className="input-field">
               <select
-                name="type"
+                name="description_type"
                 id="type"
                 onChange={formData.handleChange}
                 onBlur={formData.handleBlur}
@@ -214,13 +228,13 @@ const Modal = ({setModal}) => {
                 variants={fadeUp(0.9)}
                 name="image"
               />
-              {/* {formData.touched.image && formData.errors.image ? (
+              {formData.touched.image && formData.errors.image ? (
                 <MdErrorOutline size="20" className="icon" color="red" />
               ) : null}
 
               {formData.touched.image && formData.errors.image ? (
                 <small className="error_m">{formData.errors.image}</small>
-              ) : null} */}
+              ) : null}
             </div>
 
 
@@ -233,9 +247,16 @@ const Modal = ({setModal}) => {
               className="mt-2 main-btn button2 text-white"
               variants={fadeUp(1.0)}
               type="submit"
-              // onClick={()=>{setModal(false)}}
-            >
-              Create Pizza
+            >{
+              isEditing ? "Edit Pizza" : "Create Pizza"
+            }
+              
+            </motion.button>
+            <motion.button
+              className="mt-2 main-btn button1 bg-dark text-white"
+              variants={fadeUp(1.1)}
+              onClick={()=>{setModal(false)}}
+            >Cancel              
             </motion.button>
 
             
@@ -243,6 +264,11 @@ const Modal = ({setModal}) => {
         </div>
       </motion.div>
     </div>
+
+
+
+    <Toaster />
+    </>
   );
 };
 

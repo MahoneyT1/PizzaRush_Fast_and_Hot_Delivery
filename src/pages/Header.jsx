@@ -10,10 +10,12 @@ import Loading from "./Loading";
 
 
 
-const Header = ({productsInCart,prodLength}) => {
+const Header = ({productsInCart,prodLength, fetchPizzas, fetchCart}) => {
 
   const {user, setUser} = useContext(UserContext)
   const [loading, setLoading] = useState(false)
+
+  
 
   const navigate = useNavigate()
 
@@ -26,10 +28,14 @@ const Header = ({productsInCart,prodLength}) => {
         
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
-        console.log("user logged out")
+        
+        localStorage.removeItem("shopping-cart");
+        localStorage.removeItem("pizzas");
+        // console.log("user logged out")
         setUser(null)
         navigate('/')
         setLoading(false)
+        window.location.reload();
         
         
         // alert('Login successful!');
@@ -43,7 +49,7 @@ const Header = ({productsInCart,prodLength}) => {
       } catch (error) {
         if (error.response && error.response.data) {
           const errors = error.response.data;
-          console.log(errors)
+          // console.log(errors)
           setLoading(false)
           
         }
@@ -83,7 +89,7 @@ const Header = ({productsInCart,prodLength}) => {
               <Link to="/" className="nav-link">Home</Link>
             </li>
             <li>
-              <Link to="menu" className="nav-link ">Menu</Link>
+              <Link to="menu" onClick={()=> fetchPizzas()} className="nav-link ">Menu</Link>
             </li>
             <li>
               <Link to="/pizza" className="nav-link ">Specials</Link>
@@ -107,7 +113,7 @@ const Header = ({productsInCart,prodLength}) => {
 
 
             <li className="cart-container">
-              <Link to="/cart" className="nav-link  "><AiOutlineShoppingCart size={24} /></Link> 
+              <Link onClick={()=> fetchCart()} to="/cart" className="nav-link  "><AiOutlineShoppingCart size={24} /></Link> 
               { prodLength > 0 && (<span className="product-count">{prodLength} </span>	)}
             </li>
 

@@ -12,7 +12,7 @@ const PrivateRoute = ({ isAdminRoute = false }) => {
   
   // Check if the user is a superuser (only for admin routes)
 //   const isSuperUser = localStorage.getItem("is_superuser") === "true";
-  const isSuperUser = user.is_superuser;
+  const isSuperUser = user?.is_superuser;
   
   // If no token and trying to access any route, redirect to login
   if (!token) {

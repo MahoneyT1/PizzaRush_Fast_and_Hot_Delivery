@@ -4,40 +4,18 @@ import Data from "../data";
 import { Link } from "react-router-dom";
 import Headings from "../components/Headings";
 import { TbCurrencyNaira } from "react-icons/tb";
+import { BsCurrencyDollar } from "react-icons/bs";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
-const MenuPage = ({ addProductToCart }) => {
-  const [pizzas, setPizzas] = useState([])
-  const token = localStorage.getItem("access_token");
-
+const MenuPage = ({ addProductToCart,fetchPizzas, pizzas }) => {
 
 
 
-  // Fetch pizzas with Authorization header
-  const fetchPizzas = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/pizzas/", {
-        headers: {
-          Authorization: `Bearer ${token}`, // Add Bearer token here
-        },
-      });
-      // Save data to localStorage
-      localStorage.setItem("pizzas", JSON.stringify(response.data));
-      setPizzas(response.data); // Update state with the fetched data
-    } catch (error) {
-      console.error("Error fetching pizzas:", error);
-      alert("Failed to load pizzas. Please check your connection or login again.");
-    }
-  };
 
-  useEffect(() => {
-    const storedPizzas = localStorage.getItem("pizzas");
-    if (storedPizzas) {
-      setPizzas(JSON.parse(storedPizzas)); // Use stored data if it exists
-    } else {
-      fetchPizzas(); // Fetch data from API if no data in localStorage
-    }
-  }, []);
+ 
+
+  
 
 
 
@@ -99,7 +77,7 @@ const MenuPage = ({ addProductToCart }) => {
                   onClick={() => addProductToCart(item)}
                   className="button2 p-1 px-3 text-white"
                 >
-                  Add To Cart <TbCurrencyNaira size={20} /> {item.price}
+                  Add To Cart ${item.price}
                 </button>
               </motion.div>
             </div> ))
@@ -149,6 +127,9 @@ const MenuPage = ({ addProductToCart }) => {
           ))}
         </div>
       </div>
+
+
+      <Toaster />
     </div>
   );
 };

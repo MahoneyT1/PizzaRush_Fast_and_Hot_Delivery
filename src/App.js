@@ -33,19 +33,52 @@ import axios from "axios";
 // import Loading from "./pages/Loading.jsx";
 import { AnimatePresence } from "framer-motion";
 import Modal from "./pages/Admin/Modal.jsx";
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const [productsInCart, setProducts] = useState(
     JSON.parse(localStorage.getItem("shopping-cart")) || []
   );
 
+  const [pizzas, setPizzas] = useState([])
+  // const token = localStorage.getItem("access_token");
+
+  // console.log(pizzas)
+
 
   useEffect(() => {
     localStorage.setItem("shopping-cart", JSON.stringify(productsInCart));
   }, [productsInCart]);
 
+  
+  const fetchCart = async() => {
+    
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await axios.get(`http://localhost:8000/cart/`,{
+        headers : {
+          Authorization : `Bearer ${token}`
+        }
+      })
+      // console.log(response.data)
+      setProducts(response.data.items)
+      
+    } catch (error) {
+      console.log(error.message)
+      
+    }
+  }
 
+  useEffect(()=>{
+    fetchCart();
+  },[])
+  
   const addProductToCart = async (product) => {
+
+    const token = localStorage.getItem("access_token");
+    
+   
+      
 
     
     setProducts((prevProducts) => {
@@ -62,7 +95,9 @@ function App() {
       }
     });
 
-    const token = localStorage.getItem("access_token");
+
+    
+
 
     const { id, quantity } = product;
 
@@ -88,27 +123,65 @@ function App() {
     }
   };
 
-  const onProductRemove = async (product) => {
-    setProducts((oldState) =>
-      oldState.filter((item) => item.id !== product.id)
-    );
+  
+  
+  // const onProductRemove = async (id) => {
+  //   const token = localStorage.getItem("access_token"); 
 
-    // const { id } = product;
+  //   try {
+  //     const response = await axios.post(
+  //       `http://localhost:8000/cart/delete/${id}`,
+  //       {
+  //         headers: {
+  //           "Authorization": `Bearer ${token}`, 
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     console.log(response.data); // Handle the response after deletion
+  //     toast.success(response.data)
+  //     setProducts((oldState) =>
+  //       oldState.filter((item) => item.id !== id)
+  //     );
+  //   } catch (error) {
+  //     console.error("There was an error deleting the item from the cart:", error);
+  //     toast.error(error.message)
+  //   }
 
-    // try {
-    //   const response = await axios.post(`http://localhost:8000/cart/delete`, {
-    //     pizza: id,
-    //   });
-    //   console.log("Item deleted:", response.data);
-    //   return response.data;
-    // } catch (error) {
-    //   console.error(
-    //     "Error deleting item from cart:",
-    //     error.response ? error.response.data : error.message
-    //   );
-    //   throw error;
-    // }
+  // };
+
+  // Function to remove a product from the cart
+  const onProductRemove = (productId) => {
+    const updatedCart = productsInCart.filter((product) => product.pizza !== productId);
+    setProducts(updatedCart); // Update the state
   };
+
+  const handleDeleteItem = async (productId) => {
+    // setLoading(true);
+    try {
+      const token = localStorage.getItem("access_token");
+  
+      // Send a POST request to delete the item from the cart
+      await axios.post(
+        "http://localhost:8000/cart/delete/", // Replace with your endpoint
+        { pizza: productId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      // Update the local state after deletion
+      const updatedCart = productsInCart.filter((product) => product.pizza !== productId);
+      onProductRemove(productId); // Notify parent to update the cart
+      toast.success("Item removed from cart.");
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      toast.error("Failed to remove item. Please try again.");
+    }
+  };
+  
 
   const onQuantityChange = (productId, count) => {
     setProducts((oldState) => {
@@ -120,8 +193,42 @@ function App() {
     });
   };
 
+
+
+
+
+
+
+
+
+
+  // Fetch pizzas with Authorization header
+  const fetchPizzas = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/pizzas/");
+      // Save data to localStorage
+      localStorage.setItem("pizzas", JSON.stringify(response.data));
+      setPizzas(response.data); // Update state with the fetched data
+    } catch (error) {
+      console.error("Error fetching pizzas:", error);
+      toast.error("Failed to load pizzas. Please check your connection or login again.");
+    }
+  };
+
+  useEffect(() => {
+    const storedPizzas = localStorage.getItem("pizzas");
+    if (storedPizzas) {
+      setPizzas(JSON.parse(storedPizzas)); // Use stored data if it exists
+    } else {
+      fetchPizzas(); // Fetch data from API if no data in localStorage
+    }
+  }, []);
+
+
+
   return (
     <UserProvider>
+      <Toaster />
       <AnimatePresence mode="wait">
         <Router>
           <ScrollToTop />
@@ -132,6 +239,8 @@ function App() {
                 <SharedLayout
                   addProductToCart={addProductToCart}
                   prodLength={productsInCart.length}
+                  fetchPizzas={fetchPizzas}
+                  fetchCart={fetchCart}
                 />
               }
             >
@@ -145,29 +254,33 @@ function App() {
                 }
               />
               <Route path="signup" element={<Signup />} />
-              <Route path="login" element={<Login />} />
+              <Route path="login" element={<Login setProducts={setProducts} fetchCart={fetchCart} />} />
               <Route path="load" element={<Modal />} />
               <Route path="contact" element={<Contact />} />
               <Route path="about" element={<About />} />
               <Route
                 path="menu"
-                element={<MenuPage addProductToCart={addProductToCart} />}
+                element={<MenuPage addProductToCart={addProductToCart}  fetchPizzas={fetchPizzas} pizzas={pizzas}/>}
               />
               <Route path="map" element={<MapLocator />} />
               <Route path="pizza" element={<YourPizza />} />
               <Route path="base" element={<Base />} />
               <Route path="toppings" element={<Toppings />} />
-              <Route
-                path="cart"
-                element={
-                  <Cart
-                    productsInCart={productsInCart}
-                    onProductRemove={onProductRemove}
-                    prodLength={productsInCart.length}
-                    onQuantityChange={onQuantityChange}
-                  />
-                }
-              />
+
+              <Route element={<PriveteRoute />}>
+                <Route
+                  path="cart"
+                  element={
+                    <Cart
+                      productsInCart={productsInCart}
+                      handleDeleteItem={handleDeleteItem}
+                      prodLength={productsInCart.length}
+                      onQuantityChange={onQuantityChange}
+                      fetchCart={fetchCart}
+                    />
+                  }
+                />
+              </Route>
 
               <Route element={<PriveteRoute />}>
                 <Route path="profile" element={<User />} />
