@@ -1,108 +1,178 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from paypalrestsdk import Payment
 from django.conf import settings
-from .paypal_utils import paypalrestsdk
-from Cart.models import Cart, CartItem
 from rest_framework import status
+from .paystack import Paystack
+import hmac
+import hashlib
+from User.models import User
+from order.models import Order, OrderItem
+from Cart.models import CartItem, Cart
+from django.shortcuts import redirect, render
+import json
+import requests
 
 
-class CreatePayment(APIView):
-    """Paypal view"""
+class InitializePaymentView(APIView):
+    """
+    View for creating payment
+    """
+
+    def post(self, request, *args, **kwargs):
+        """Makes a post request to create the paymet"""
+
+        email = request.data.get('email')
+        amount = request.data.get('amount')
+
+        if not email or not amount:
+            return Response(
+                {"email": "Email and amount are required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        paystack = Paystack()
+
+        response = paystack.initialize_payment(email=email, amount=amount)
+
+        if response.get("status"):
+            return Response(response['data'], status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {"error": response.get('message' 'An error occured')},
+                 status=status.HTTP_400_BAD_REQUEST
+            )
+        
+
+class VerifyPaymentView(APIView):
+    """Verify if payment was successful
+    """
+
+    def post(self, request, reference):
+        """Makes a post request to verify the payment
+        """
+
+        paystack = Paystack()
+        response = paystack.verify_payment(reference)
+
+        if response.get("status"):
+            return Response(response["data"], status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {"error": response.get("message", "An error occurred.")},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class PaystackWebhookView(APIView):
+    """
+    Handle Paystack Webhook event
+    """
+
+    def post(self, request, *args, **kwargs):
+        paystack_signature = request.headers.get('x-paystack-signature')
+
+        if not paystack_signature:
+            return Response({"error": "Signature missing"}, status=status.HTTP_400_BAD_REQUEST)
+
+        payload = request.body
+        secret_key = settings.PAYSTACK_SECRET_KEY.encode()
+
+        expected_signature = hmac.new(
+            secret_key, payload, hashlib.sha512
+        ).hexdigest()
+
+        if not hmac.compare_digest(expected_signature, paystack_signature):
+            return Response("Invalid signature", status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            # process event
+            event = json.loads(payload)
+
+            if event.get('event') == 'charge.success':
+                data = event['data']
+
+                #process the payment
+                # mark order as paid
+
+                reference = data['reference']
+                amount = data['amount'] / 100
+                email = data['Customer']['email']
+    
+    
+                user = User.objects.get(email=email)
+                if not user:
+                    return Response({"error": "User not found"},
+                                status=status.HTTP_400_BAD_REQUEST)
+                
+                if Order.objects.filter(reference=reference).exists():
+                    return Response({"error": "Order already processed"},
+                                    status=status.HTTP_200_OK)
+
+                # create order
+                order = Order.objects.create(
+                    user=user,
+                    reference=reference,
+                    total_amount=amount,
+                    status="Paid"
+                )
+
+                # fetch user cartitems
+                cart_items = CartItem.objects.filter(user=user)
+
+                # create orderitem from cartItem
+                for item in cart_items:
+                    OrderItem.objects.create(
+                        order=order,
+                        pizza=item.pizza,
+                        quantity=item.quantity,
+                        price=item.pizza.price
+                    )
+
+                # clear cart_items from db
+                cart_items.delete()
+                return Response({"success": "Order successfully placed"}, status=status.HTTP_200_OK)
+        
+        except (KeyError, json.JSONDecodeError):
+            return Response({"error": "Invalid payload structure"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        # Handle other events (optional)
+        return Response({"status": "ignored"}, status=status.HTTP_200_OK)
+    
+
+class CheckoutView(APIView):
+    """Handles the checkout process and create Paystack payment link
+    """
 
     def post(self, request):
-        """Checks out cart-item"""
-        cart = Cart.objects.get(user=request.user)
-        cart_item = CartItem.objects.filter(cart=cart)
+        
+        user = request.user
+        cart = Cart.objects.get(user=user)
+        cart_items = CartItem.objects.filter(cart=cart)
 
-        if not cart_item:
-            return Response({
-                'details': 'Not Found'
-            }, status=404)
-    
-        items_list = []
-        total_price = 0
+        if not cart_items.exists():
+            return Response({"error": "Your cart is empty"},
+                            status=status.HTTP_404_NOT_FOUND)
+        
+        total_amount = sum(item.pizza.price * item.quantity for item in cart_items)
 
-        for item in cart_item:
-            items_list.append(
-                {
-                    'name': item.pizza.name,
-                    'sku': str(item.pizza.id),
-                    'price': f'{ item.pizza.price }',
-                    'currency': 'USD',
-                    'quantity': item.quantity
-                }
-            )
-            total_price += item.pizza.price * item.quantity
+        # prepare paystack payment data
+        reference = f"order_{user.id}_{int(total_amount * 100 )}"
+        payment_data = {
+            "email": user.email,
+            "amount": total_amount * 100,
+            "reference": reference
+        }
 
-        payment = Payment(
-            {
-                'intent': 'sale',
-                'payer': {
-                    'payment_method': 'paypal'
-                },
-                'redirect_urls': {
-                    'return_url': 'https://4b7f-197-210-78-79.ngrok-free.app/paypal/execute/',
-                    'cancel_url': 'https://4b7f-197-210-78-79.ngrok-free.app/api/paypal/cancel/'
-                },
-                'transactions': [{
-                    'amount': {
-                        'total': f'{total_price:.2f}',
-                        'currency': 'USD'
-                    },
-                    'description': 'Payment for item in the cart',
-                    'item_list': {
-                        'items': items_list
-                    }
-                }]
-            }
-        )
+        # Create a paystack payment link
+        paystack = Paystack()
+        response = paystack.initialize_payment(email=user.email, amount=payment_data.get('amount'))
 
-        if payment.create():
-            approved_url = next(link['href'] for link in payment.links if link['rel'] == 'approval_url')
-            return Response({
-                'status': 'success',
-                'approval_url': approved_url,
+        # check if paystack was successfull
+        if response.status == 200:
+            payment_url = response['data']['authorization_url']
 
-            }, status=200)
-
+            # redirect user to payment_url on paystack
+            return redirect(payment_url)
         else:
-            return Response({
-                'status': 'error',
-                'error': payment.error
-            }, status=400)
-
-
-class Execute_payment(APIView):
-    """Executes payment"""
-
-    def get(self, request):
-        """gets the payment details from the payment system"""
-
-        payment_id = request.query_params.get('paymentId')
-        payer_id = request.query_params.get('PAYID')
-
-        if not payment_id or not payer_id:
-            return Response({
-                'status': 'error',
-                'message': 'Missing parameters'
-            }, status=status.HTTP_400_BAD_REQUEST)
-        
-        payment = Payment.find(payment_id)
-
-        if payment.state == 'approved':
-
-            if payment.execute({'payer_id': payer_id}):
-                return Response({
-                    'status': 'success',
-                    'message': 'Payment executed successfully'
-                })
-            
-            else:
-                return Response({
-                    'status': 'error',
-                    'message': 'Payment execution failed'
-                }, status=status.HTTP_400_BAD_REQUEST)
-        
-        return Response({"status": "error", "message": "Payment not approved"}, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response({"error": "Failed to create Paystack payment link"},
+                            status=status.HTTP_400_BAD_REQUEST)

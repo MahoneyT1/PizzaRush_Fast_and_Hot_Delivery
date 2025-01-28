@@ -1,9 +1,10 @@
 """Payment system url"""
-from django.urls import path
+from django.urls import path, re_path
 
-from .views import CreatePayment, Execute_payment
+from .views import InitializePaymentView, VerifyPaymentView, PaystackWebhookView
 
 urlpatterns = [
-    path('create_payment/', view=CreatePayment.as_view(), name='creating-payment'),
-    path('paypal/execute/', view=Execute_payment.as_view(), name='execute-payment')
+    path('paystack/initialize/', view=InitializePaymentView.as_view(), name='creating-payment'),
+    path('paystack/transaction/verify/<str:reference>/', view=VerifyPaymentView.as_view(), name='verify-payment'),
+    path('paystack/webhook/', view=PaystackWebhookView.as_view(), name='paystack-webhook')
 ]
