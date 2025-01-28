@@ -12,19 +12,13 @@ const About = () => {
       id: "1",
       name: "Olawoyin Yusuf",
       image: "../../Images/avatar-ali.png",
-      stack: "Frontend Development",
+      stack: "Software Engineer",
     },
     {
       id: "2",
-      name: "Keneth Dev",
+      name: "Keneth Victor",
       image: "../../Images/avatar-anisha.png",
-      stack: "Backend Development",
-    },
-    {
-      id: "3",
-      name: "Other Dev",
-      image: "../../Images/avatar-shanai.png",
-      stack: "Backend Development",
+      stack: "Software Engineer",
     },
   ];
 

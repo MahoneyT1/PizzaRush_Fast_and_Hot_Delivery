@@ -110,7 +110,7 @@ function App() {
         }
       );
 
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       if (error.response && error.response.data) {
         const errors = error.response.data;
@@ -250,6 +250,7 @@ function App() {
                   <Home
                     addProductToCart={addProductToCart}
                     prodLength={productsInCart.length}
+                    pizzas={pizzas}
                   />
                 }
               />

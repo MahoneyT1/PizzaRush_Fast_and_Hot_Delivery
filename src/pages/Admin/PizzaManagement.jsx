@@ -51,8 +51,9 @@ const PizzaManagement = () => {
         }
       );
       
+      pizzas();
       return toast.success("Pizza deleted successfully.")
-      console.log("pizza deleted successfully")
+      // console.log("pizza deleted successfully")
     } catch (error) {
       console.log(error.response);
     }

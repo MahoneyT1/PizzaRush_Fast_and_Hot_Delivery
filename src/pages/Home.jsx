@@ -6,14 +6,15 @@ import FAQ from '../components/FAQ'
 import HeroM from '../components/HeroMotion'
 import {motion} from 'framer-motion'
 
-const Home = ({addProductToCart}) => {
+const Home = ({addProductToCart, pizzas}) => {
 
 
   return (
     <motion.div >
         <HeroM />
         <ShopComponent
-          addProductToCart={addProductToCart}  
+          addProductToCart={addProductToCart} 
+          pizzas={pizzas} 
         />
         <Featured />
         <Testimonials />

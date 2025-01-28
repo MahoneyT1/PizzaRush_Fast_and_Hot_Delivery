@@ -17,9 +17,6 @@
   text-decoration: none !important;
   font-family: "Poppins", system-ui;
   /* border: 1px solid red; */
-  /* overflow: auto; */
-  /* font-family: "poppins"; */
-  /* overflow: auto; */
   text-decoration: none;
   font-family: "Montserrat", sans-serif;
   
@@ -961,6 +958,14 @@ a.ad-link:hover{
 
 }
 
+.loading-p{
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 .dash {
   padding: 20px;
 }
@@ -1158,8 +1163,14 @@ button:hover {
 }
 
 
+@media (max-width: 768px) {
+  .hero-image{
+    padding: 0;
+  }
+}
 
 @media (max-width: 768px) {
+
   .para,
   .hero-header{
     max-width: 100%;

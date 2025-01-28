@@ -29,7 +29,7 @@ const Footer = () => {
 
              
 
-                <ul className=" nav d-flex justify-content-start  align-items-center m-0 flex-column gap-2 mb-3 mb-md-0">
+                <ul className="mt-5 mt-sm-0 nav d-flex justify-content-start  align-items-center m-0 flex-column gap-2 mb-3 mb-md-0">
                     <li>
                         <b className='nav-link pt-0 text-white fw-bolder'>Pages</b>
                     </li>
@@ -50,7 +50,7 @@ const Footer = () => {
 
              
 
-                <ul className=" nav d-flex justify-content-start  align-items-center m-0 flex-column gap-2 mb-3 mb-md-0">
+                <ul className="mt-5 mt-sm-0 nav d-flex justify-content-start  align-items-center m-0 flex-column gap-2 mb-3 mb-md-0">
                     <li>
                         <b className='nav-link pt-0 text-white fw-bolder'>Quick Links</b>
                     </li>
@@ -72,7 +72,7 @@ const Footer = () => {
                 {/* <h5></h5> */}
 
 
-                <div className=" d-flex text-center text-lg-start  align-items-lg-start align-items-center flex-column gap-2 p-4 p-lg-0 mb-3 mb-md-0">
+                <div className="mt-5 mt-sm-0 d-flex text-center text-lg-start  align-items-lg-start align-items-center flex-column gap-2  p-lg-0 mb-3 mb-md-0">
                 <li>
                         <b className='nav-link pt-0 text-white fw-bolder'>Subscribe To Our Newsletter</b>
                     </li>

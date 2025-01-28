@@ -85,8 +85,11 @@ const Login = ({setProducts, fetchCart}) => {
           // console.log(errors);
           toast.error("Invalid Username or Password");
           setLoading(false);
+          
         } else {
+          setLoading(false);
           console.error("Unknown error:", error);
+          toast.error(error.message);
         }
       }
     }

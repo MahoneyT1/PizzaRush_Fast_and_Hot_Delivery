@@ -115,7 +115,7 @@ const User = () => {
                   
                   <div className="each-detail d-flex align-items-center gap-4">
                     <p className="fw-bolder">Last Name : </p>
-                    <p>{user.first_name}</p>
+                    <p>{user.last_name}</p>
                   </div>
 
                   <div className="each-detail d-flex align-items-center gap-4">
@@ -131,6 +131,12 @@ const User = () => {
                   <div className="each-detail d-flex align-items-center gap-4">
                     <p className="fw-bolder">Address : </p>
                     <p>{user.address}</p>
+                  </div>
+
+
+                  <div className="each-detail d-flex align-items-center gap-4">
+                    <p className="fw-bolder">Phone Number : </p>
+                    <p>{user.phone_number}</p>
                   </div>
 
                   

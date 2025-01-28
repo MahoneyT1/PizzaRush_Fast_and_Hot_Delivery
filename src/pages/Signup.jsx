@@ -58,6 +58,7 @@ const Signup = () => {
             
           else {
             console.error("Unknown error:", error);
+            toast.error("Something Went wrong. Please try again!")
             setLoading(false)
           }
         }
@@ -233,6 +234,8 @@ const Signup = () => {
               <motion.button
                 className="main-btn text-white button2"
                 variants={fadeUp(1.1)}
+                type="button"
+                onClick={()=> toast.error("Feature Not Available Yet.")}
               >
                 Sign up with Google
               </motion.button>
