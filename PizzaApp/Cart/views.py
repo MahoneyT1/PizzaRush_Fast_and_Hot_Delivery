@@ -51,6 +51,7 @@ class CartItemCreateView(APIView):
         cart_item, item_created = CartItem.objects.get_or_create(
             cart=cart,
             pizza=pizza,
+            price=pizza.price
             defaults={'quantity': quantity}
         )
 
